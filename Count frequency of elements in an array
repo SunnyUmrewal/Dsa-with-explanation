@@ -1,0 +1,63 @@
+package com.beginnerdsa.step3;
+
+/*
+Hashing is the concept of storing the numbers
+with their frequency in easy manner
+**
+The great thing about hashing is, we can achieve all three operations (search, insert and delete) in O(1) time on average.
+Hashing is mainly used to implement a set of distinct items (only keys) and dictionaries (key value pairs).
+**
+
+first we see the brute force then will optimize it with hashing
+
+
+
+now->we are given with array of size 'n' with 'q' queries for each query
+we need to find how many times each query occur in array.
+
+
+what do we do??
+we declare n,q
+we read n (basically take input for n)
+declare an array of size n
+read array (fill array with elements)
+now read q( take input for q, basically how many queries)
+read query (for each query take input)
+declare count (in the same loop as above query one)
+for each element in array traverse it, and if array[j]==query
+then count++
+
+then at last print count for each query
+
+ */
+
+import java.util.Scanner;
+
+public class _01_count_freq_bruteforce {
+  public static void main(String[] args) {
+    Scanner sc = new Scanner(System.in);
+    int n = sc.nextInt();
+    int q = sc.nextInt();
+
+    int[] arr = new int[n];
+    for (int i = 0; i < n; i++) { //O(N)
+      arr[i] = sc.nextInt();
+    }
+
+    for (int i = 0; i < q; i++) {  //O(Q)
+      q = sc.nextInt();
+      int count = 0;
+      for (int j = 0; j < n; j++) {//O(N)
+        if (arr[j] == q) {
+          count++;
+        }
+      }
+      System.out.println(count);
+    }
+  }
+}
+
+//time complexity--> O(N+(Q*N))-->O(N*(Q+1))-->O(N*Q)
+
+//NOW LET US DO OPTIMIZE-->
+

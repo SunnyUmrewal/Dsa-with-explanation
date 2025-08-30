@@ -1,4 +1,4 @@
-# Dsa-with-explanation
+# Dsa-with-explanation-Java
 This repo contains dsa questions for all the beginner to advance of each topic that can help you create strong problem solving skills
 this can help you start your dsa journey or revise the most important questions.
 

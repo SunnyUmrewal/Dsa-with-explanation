@@ -1,0 +1,62 @@
+/*
+final solution: we use hashmap (data structure) having key value pair instead of hash array (index act as key)
+
+it is same as hashing array but it saves space
+
+in hashmap its mainly like a table with 2 vertical sides one is key and one is value
+it only has keys that are in the array, is hashing we create hash array for all numbers that are present or not
+if array contain - 1,2,10 then we create hash array of size 10+1, (max number +1) , and all other entries are 0
+it consumes lots of space.
+but now, in hashmap
+we only has those keys which are present in array so it saves lots of space
+
+
+in hashmap, it takes O(n) space, n is size of the array
+for an array having- {1,5,15}
+
+hashmap will take O(3) space
+hashing will take O(16) space
+
+
+insertion operation in hashmap has average O(1) time
+and printing hashmap[i] also takes O(1) time on average.
+
+*/
+
+import java.util.Scanner;
+import java.util.HashMap;
+import java.util.Map;
+
+public class _03_count_freq_hashing {
+  public static void main(String[] args) {
+    Scanner sc = new Scanner(System.in);
+    System.out.println("enter size of array:");
+    int n = sc.nextInt();
+    System.out.println("enter elements in array:");
+    int[] arr = new int[n];
+
+    HashMap<Integer, Integer> hash = new HashMap<>();
+    for (int i = 0; i < n; i++) {
+      arr[i] = sc.nextInt();
+//        /*
+//        In hashmap in java we cannot do hashmap(arr[i])=hashmap(arr[i])+1;
+//        because going arr[i] gives us a variable space. but hashmap(arr[i]) is invalid. we need to do hashmap.get(key)
+//        now we have to find how many times this number is coming if not them put 0
+//        and then we put the key and its frequency in hashmap
+//         */
+      int g = hash.getOrDefault(arr[i], 0);
+      hash.put(arr[i], g + 1);
+    }
+    System.out.println("enter how many queries:");
+
+    int q = sc.nextInt();
+    for (int i = 0; i < q; i++) {
+      System.out.println("enter query:");
+
+      int query = sc.nextInt();
+      int count = hash.getOrDefault(query, 0);
+      System.out.println("count of query: "+ count);
+    }
+
+  }
+}

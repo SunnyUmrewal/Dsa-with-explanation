@@ -1,0 +1,48 @@
+/*
+check if given array is subset of another array
+given that there are no duplicates.
+
+check if arr2 is subset of arr1
+
+brute force:
+we can do like for each value of arr2 we iterate arr1 and check
+time complexity: O(n*m)
+
+hashing approach:
+as we know there are no duplicates, so we can use hashset.
+in naive approach we were iterating arr1 everytime for each element of arr2
+but, now we can just store all elements of arr2 in hashset and check directly
+if element is present in arr1 or not.
+time complexity: O(n+m)
+space: O(n) n=size of arr1
+
+ */
+import java.util.Set;
+import java.util.HashSet;
+class Ideone{
+    public static void main(String[] args)throws java.lang.Exception{
+        int[] arr1={6,7,3,2};
+        int[] arr2={2,3};
+
+        int n=arr1.length;
+        int m=arr2.length;
+
+        Set<Integer> set=new HashSet<>();
+        for(int i:arr1){
+            set.add(i);
+        }
+        for(int i=0;i<m;i++){
+            if(!set.contains(arr2[i])){
+                System.out.println("arr2 is not subset of arr1");
+                return;
+            }
+        }
+    System.out.println("arr2 is subset of arr1");
+    }
+}
+
+/*
+https://ideone.com/cOlcHq
+*/
+
+//what if there are duplicate elements?--->

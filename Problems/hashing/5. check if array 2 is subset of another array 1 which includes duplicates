@@ -1,0 +1,68 @@
+/*
+to find if arr2 is subset of arr1 when duplicates are present.
+
+if there are duplicates present in arrays then we can also
+use hashing. we can use hashmap (key,value)
+
+we create a hashmap and store all arr1 element in it along with their
+frequencies and iterate arr2 to check if the number present in hashmap
+and if yes then we decrease 1 from frequency of the number in hashmap
+if it's not present or frequency is 0 then we return false;
+
+time complexity: O(n+m)
+space: O(n)
+
+ */
+
+ 
+import java.util.HashMap;
+import java.util.Map;
+
+class Ideone {
+  static boolean isSubset(int[] arr1, int[] arr2) {
+      // if there are more elements in arr2 then in arr1 then 100% it cannot be subset of arr1
+      if (arr1.length < arr2.length) {
+          return false;
+      }
+      
+      Map<Integer, Integer> map = new HashMap<>();
+      
+      for (int i : arr1) {
+          // now fetching the frequencies of element i in arr1 till now and increasing it by 1;
+          // just like the old questions we did
+          int countOfI = map.getOrDefault(i, 0) + 1;
+          map.put(i, countOfI);
+      }
+      
+      for (int i : arr2) {
+          // if element is in arr2 and not in arr1
+          if (!map.containsKey(i)) return false;
+
+          // if we get more occurrence of element in arr2 then in arr1 then
+          if (map.get(i) == 0) return false;
+
+          // if element is present more time than 0 then reduce its frequency by 1
+          int countOfI = map.get(i);
+          map.put(i, countOfI - 1);
+      }
+      return true;
+  }
+  
+
+  public static void main(String[] args) throws java.lang.Exception {
+    int[] arr1 = {6, 7, 3, 2, 2};
+    int[] arr2 = {6, 7, 2, 2};
+
+    boolean ans = isSubset(arr1, arr2);
+    System.out.println(ans);
+
+    if(ans)
+    {
+        System.out.println("arr2 is subset of arr1");
+    }
+    else 
+    {
+        System.out.println("arr2 is not subset of arr1");
+    }
+  }
+}

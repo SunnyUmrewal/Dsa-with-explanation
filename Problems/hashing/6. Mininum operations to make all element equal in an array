@@ -1,0 +1,68 @@
+package com.beginnerdsa.step3;
+/*
+
+ques: min operation to make all element equal in an array.
+
+eg-
+arr[] ={1,2,3,4};
+output: 3
+
+In order to make all elements equal, we select 1 element of highest frequency and
+convert all other elements to it, by just add, subtract, multiply and divide.
+
+if the highest element occur k times then we
+do [size of array-k] to get min operations to make all element equal in array.
+
+brute force:
+to find element with the highest frequency  we can run 2 loops.
+1 outer loop to iterate each element and 1 inner loop for counting frequencies,
+and then we compare it with current highest frequency and change it accordingly.
+
+time:O(n2)
+space: 0(1)
+
+
+hashing approach:
+
+we can use hashmap for storing frequencies just like old questions
+
+
+ */
+import java.util.HashMap;
+import java.util.Map;
+public class _07_min_operation_to_make_all_element_equal {
+    public static void main(String[] args){
+        int[] arr = {1, 2, 1, 4, 3, 1};
+        int n = 6;
+
+
+        //IMPORTANT FOR OTHER QUESTIONS TOO, TO COUNT FREQUENCIES...USED IN MANY QUESTIONS SO FAR
+        Map<Integer, Integer> map = new HashMap<Integer, Integer>();
+        for (int i = 0; i < n; ++i){
+            if (map.containsKey(arr[i])){
+                map.put(arr[i], map.get(arr[i]) + 1);
+            }
+            else{
+                map.put(arr[i], 1);
+            }
+        }
+
+        //FOR MAX FREQUENCY CHANGE
+        int maxfreqsofar = 0;
+        for (Map.Entry<Integer, Integer> entry : map.entrySet()){
+            int freq = entry.getValue();
+            if (freq > maxfreqsofar){
+                maxfreqsofar = freq;
+            }
+        }
+
+        System.out.println("The minimum number of operations required to make all elements equal is: " + (n - maxfreqsofar));
+    }
+}
+
+
+
+/*
+https://ideone.com/KOJCOq
+*/
+

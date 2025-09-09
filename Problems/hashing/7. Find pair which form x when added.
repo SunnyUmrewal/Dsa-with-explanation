@@ -1,0 +1,54 @@
+package com.beginnerdsa.step3;
+
+/*
+
+Find out the pair from array whose sum forms the number 'x' when both the numbers of the pair are added
+
+we can do it by brute force by making 2 loops where outer loop point to element at index 0 and
+inner loop makes traverse full array from index 1 then outer loop to index 1 and inner loop traverse
+again to full array till outer loop reaches the end of the array.
+in this we will make a condition that if array[i]+array[j] == sum then we print the sum and return;
+where i is for outer loop and j is for inner loop.
+we need to find only 1 pair.
+this will be having time complexity- O(n*n) , n is size of array.
+
+
+for optimized we will use hashset as this does not store duplicate numbers, and we need not check
+number visited already again and again.
+
+suppose our number is 8 and array is {1,2,3,4} so 1 by 1 we will check
+if- 8-1 is in seet if yes then return the pair of 1 and 8-1. if not then we add 1 in set.
+    then we check if 8-2 is in array so that we can form a pair of 2 and 6, if yes then return pair if not then add
+    2 in set for future need.
+    this we can do in O(n) time.
+
+ */
+import java.util.HashSet;
+import java.util.Set;
+
+public class _08_find_pair_which_form_x_when_added {
+  static int pairSum(int[] arr,int x){
+    Set<Integer> set=new HashSet<>();
+
+    for(int item:arr){
+      int temp=x-item;
+      if(set.contains(temp)){
+        return 0; //true
+      }
+      else{
+        set.add(item);
+      }
+    }
+    return -1;
+  }
+  public static void main(String[] args) {
+    int[] arr = {1, -2, -1, 1, 3};
+    int x = -2;
+
+    if (pairSum(arr, x) == -1) {
+      System.out.println("false");
+    } else {
+      System.out.println("true");
+    }
+  }
+}

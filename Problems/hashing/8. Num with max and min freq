@@ -1,0 +1,75 @@
+package com.beginnerdsa.step3;
+
+/*
+we are given an array, we have to find the number with min and max frequency
+
+
+brute force : https://onecompiler.com/java/42jzsts9t
+
+optimized: https://ideone.com/MNpPDw
+ */
+import java.util.HashMap;
+import java.util.Map;
+
+class Ideone {
+  public static void main(String[] args)throws java.lang.Exception {
+
+    // brute force approach - O(n^2)
+    //        int[] arr={1,2,3,2,4};
+    //
+    //        int maxelement=0,minelement=0,maxcount=0,mincount=Integer.MAX_VALUE;
+    //
+    //        for(int i=0;i<arr.length;i++){
+    //            int count=0;
+    //            for(int j=0;j<arr.length;j++){
+    //                if(arr[i]==arr[j]){
+    //                    count++;
+    //                }
+    //            }
+    //            if(count>maxcount){
+    //                maxcount=count;
+    //                maxelement=arr[i];
+    //            }
+    //            if(count<mincount){
+    //                mincount=count;
+    //                minelement=arr[i];
+    //            }
+    //        }
+    //    System.out.println("max element:"+maxelement+" max count: "+maxcount);
+    //    System.out.println("min element:"+minelement+" min count: "+mincount);
+
+    // optimized approach using hashmap
+
+    int[] arr = {1, 1, 2, 3, 3, 3};
+    Map<Integer, Integer> map = new HashMap<>();
+
+    int maxelement = arr[0],
+        minelement = arr[0],
+        maxcount = Integer.MIN_VALUE,
+        mincount = Integer.MAX_VALUE;
+
+    for (int i = 0; i < arr.length; i++) {
+      if (!map.containsKey(arr[i])) {
+        map.put(arr[i], 1);
+      } else {
+        map.put(arr[i], map.get(arr[i]) + 1);
+      }
+    }
+
+    for (Map.Entry<Integer, Integer> freq : map.entrySet()) {
+      if (freq.getValue() > maxcount) {
+        maxcount = freq.getValue();
+        maxelement = freq.getKey();
+      }
+      if (freq.getValue() < mincount) {
+        mincount = freq.getValue();
+        minelement = freq.getKey();
+      }
+    }
+
+    System.out.println("maxelement: "+maxelement+" maxcount: "+maxcount);
+    System.out.println("minelement: "+minelement+" mincount: "+mincount);
+
+    //time complexity : O(n)
+  }
+}

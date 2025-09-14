@@ -1,0 +1,81 @@
+package com.beginnerdsa.step3;
+/*
+we need to find pairs which satifies the condition: absolute(arr[i]-arr[j])==k  where i<j
+
+remember we need i<j not arr[i]<arr[j]
+
+for brute force we will run 2 loops and will take a count variable to store the number of count,
+for loop i will go from starting of array to last and for each element we will run an inner loop
+which will check aout condition, and if the condition satisfies, we will update the count and 
+will print the count at last,
+time complexity: O(n*n) 
+
+for optimized we will make a hashmap, in bruteforce main problem was,
+finding the pair by visiting same element again and again can we do something that will store the previous element and we can
+search easily afterwards if we need that element instead of again starting from 0 till last for each j.
+hashmap comes here we can search in O(1) time.
+
+remember we need i<j and we have a condidion abs(arr[i]-arr[j])==k
+
+we will break it into 2 parts as we open the abs:
+arr[i]-arr[j]=k and arr[i]-arr[j]=-k
+now we will see elements of array 1 by 1 through loop using j variable
+
+and will compute 
+arr[i]=k+arr[j] and arr[i]=arr[j]-k
+for each element and will check if arr[i] present in the element till now if yes then how many times? then we update the count.
+and if its not present then we put arr[j] in map for future need(main problem solved, no need to revisit the array from start)
+
+eg:int[]arr={1,5,4,3,2};
+        int k=2;
+
+we will do,
+arr[i]=k+arr[j] and arr[i]=arr[j]-k
+and will search in map is arr[i] present in map for each k+arr[j] and arr[j]-k.
+
+just dry run this...
+
+*/
+import java.util.HashMap;
+import java.util.Map;
+
+public class _12_count_pairs_which_makes_k_by_abs_diff {
+    public static void main(String[] args){
+        int[]arr={1,5,4,3,2};
+        int k=2;
+        int count=0;
+        for(int i=0;i<arr.length;i++){
+            for(int j=i+1;j<arr.length;j++){
+                if(Math.abs(arr[i]-arr[j])==k){
+                    count++;
+                }
+            }
+        }
+    System.out.println(count);
+
+
+        //optimized:
+        
+        
+/*        
+
+        Map<Integer,Integer> map = new HashMap<>();
+        int count = 0;
+
+        for (int j = 0; j < arr.length; j++) {
+            // case 1: arr[j] - arr[i] = k
+            if (map.containsKey(arr[j] - k)) {
+                count += map.get(arr[j] - k);
+            }
+            // case 2: arr[i] - arr[j] = k
+            if (k != 0 && map.containsKey(arr[j] + k)) {
+                count += map.get(arr[j] + k);
+            }
+            // update frequency
+            map.put(arr[j], map.getOrDefault(arr[j], 0) + 1);
+        }
+
+        System.out.println(count);
+*/
+    }
+}

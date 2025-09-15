@@ -1,0 +1,87 @@
+package com.beginnerdsa.step3;
+/*
+we need to calculate the sum from an index to a particular index.
+
+brute force: normally creating loop from source index to destination index and adding numbers in a sum variable
+            problem is that we may need to revisit the same element again and again for each query.
+            we can reduce our work by making a prefix sum array, it means this array stores the sum of
+            all previous elements.
+
+optimized:  we make a prefix sum array, and just print the 
+            eg: l=2 , r=5
+            prefixarray[r]-prefixarray[l-1]           //when we have same size of prefix array and given array
+            or 
+            prefixarray[r+1]-prefixarray[l]         //when we have 1 extra size of prefix array and given array
+                                                        
+           we can make prefix array by 2 methods,
+           
+           one is creating the prefix array of same size as of given array, given below
+           or 
+           by taking an extra space in prefix array than the given array
+           to access the desired range we will have different method to access the elements. 
+ */
+//brute force: 
+
+public class _13_sum_till_range_using_prefix_sum {
+  public static void main(String[] args){
+
+    //brute force
+          int[]arr= {0, 1, 2, 3, 4, 5, 6, 7, 8, 9};
+          int l=2,r=5;
+          int sum=0;
+          for(int i=l;i<=r;i++){
+              sum+=arr[i];
+          }
+      System.out.println(sum);
+
+  }
+}
+
+
+//optimized :
+
+//By this method also we can create a prefix sum array.
+//prefix array has same length as array
+/*
+public class _13_sum_till_range_using_prefix_sum {
+  public static void main(String[] args){
+    
+    int arr1[] = {0,1,2,3,4,5,6,7,8,9};
+    int[] p=new int[arr1.length];
+    int l=2,r=5;
+
+    p[0]=arr1[0];
+    for(int i=1;i<arr1.length;i++){
+      p[i]=p[i-1]+arr1[i];
+    }
+    System.out.println(p[r]-p[l-1]);
+  }
+}
+*/
+
+
+//optimized 2:
+
+/*
+public class _13_sum_till_range_using_prefix_sum {
+
+  static int[] prefixSum(int arr[]){
+    int[] prefix=new int[arr.length+1];
+    for(int i=1; i<=arr.length;i++){
+      prefix[i]=prefix[i-1]+arr[i-1];
+    }
+    return prefix;
+  }
+  static int optimizedAns(int[] prefixs, int l, int r){
+    return prefixs[r+1]-prefixs[l];
+  }
+
+  public static void main(String[] args){
+    //optimized
+    int[] prefixs=prefixSum(arr);
+    int l=2,r=5;
+    System.out.println(optimizedAns(prefixs,l,r));
+
+  }
+}
+*/

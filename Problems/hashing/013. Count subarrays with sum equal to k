@@ -1,0 +1,76 @@
+package com.beginnerdsa.step3;
+
+import java.util.Scanner;
+import java.util.HashMap;
+import java.util.Map;
+
+/*
+we need to find the number of subarrays that sum up to k
+
+brute force:
+
+we will run 2 loops, where outer loop will iterate 1 by 1 to all elements of array
+and for inner loop, for each outer loop we will run full iteration of inner loop
+and will calculate if the sum ==k if yes then increase the count and if not then just continue.
+time complexity: O(n*n)
+
+optimized:
+
+in brute force we had a problem of revisiting the already visited element so this is main problem
+we will use prefix sum and hashmap
+to have the previous sum we will use prefix sum and will store them in hashmap to search then
+when needed in O(1) time as search in hashmap is O(1).
+
+we iterate the array 1 time, and each time we will calculate the prefix sum and will
+check is the sum-k is found in prefixsum hashmap, if yes then we found a subarray whose
+sum is k, and we will store the frequency along with the prefix sum in hashmap.
+
+at last, we will return the count.
+
+time complexity: O(n)
+
+
+
+ */
+
+public class _14_numbers_of_subarray_with_sum_K {
+  static int countSubarray(int[] arr, int k) {
+    Map<Integer, Integer> map = new HashMap<>();
+    int sum = 0;
+    int count = 0;
+
+    map.put(0, 1);
+    for (int i : arr) {
+      sum += i;
+
+      if (map.containsKey(sum - k)) {
+        count += map.get(sum - k);
+      }
+      map.put(sum, map.getOrDefault(sum, 0) + 1);
+    }
+    return count;
+  }
+}
+
+/*
+
+  public static void main(String[] args) {
+    //brute force
+    int k = -10;
+    int[] arr = {10, 2, -2, -20, 10};
+    System.out.println(countSubarray(arr, k));
+    int count = 0;
+    for (int i = 0; i < arr.length; i++) {
+      int sum = 0;
+      for (int j = i; j < arr.length; j++) {
+        sum += arr[j];
+        if (sum == k) {
+          count++;
+        }
+      }
+    }
+    System.out.println(count);
+
+    System.out.println(countSubarray(arr, k));
+  }
+}

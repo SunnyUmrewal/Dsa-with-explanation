@@ -1,0 +1,77 @@
+package com.beginnerdsa.step3;
+
+//brute force:
+
+
+public class _16_count_largest_subarray_with_sum_k {
+    public static int largestSubarrayCount(int[] arr, int k) {
+        int maxlen = 0;
+        int maxlencount = 0;
+
+        for (int i = 0; i < arr.length; i++) {
+            int sum = 0;
+            for (int j = i; j < arr.length; j++) {
+                sum += arr[j];
+                if (sum == k) {
+                    int len = j - i + 1;
+                    if (len > maxlen) {
+                        maxlen = len;
+                        maxlencount = 1;
+                    } else if (len == maxlen) {
+                        maxlencount++;
+                    }
+                }
+            }
+        }
+        return maxlencount;
+    }
+
+    public static void main(String[] args) {
+        int[] arr = {3, 2, 3, 3, 2, 8};
+        int k = 8;
+        int largest = largestSubarrayCount(arr, k);
+        System.out.println(largest); // Correct output: 2
+    }
+}
+
+
+
+//-----------------------------------------------------------------------------
+
+
+//optimized:
+
+import java.util.HashMap;
+import java.util.Map;
+
+public class _16_count_largest_subarray_with_sum_k {
+  public static void main(String[] args) {
+    int[] arr = {3, 2, 3, 3, 2, 8};
+    int k = 8;
+    int mxlen = 0;
+    int count = 0;
+
+    Map<Integer, Integer> map = new HashMap<>();
+    map.put(0, -1);
+
+    int sum = 0;
+    for (int i = 0; i < arr.length; i++) {
+      sum += arr[i];
+      if (!map.containsKey(sum - k)) {
+        map.put(sum, i);
+      }
+      else {
+        int len = i - map.get(sum-k);
+        if (len > mxlen) {
+          count = 0;
+          mxlen = len;
+          count++;
+        }
+        else if (len == mxlen) {
+          count++;
+        }
+      }
+    }
+    System.out.println(count);
+  }
+}

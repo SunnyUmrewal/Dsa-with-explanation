@@ -1,0 +1,149 @@
+package com.beginnerdsa.step3._1_Hashing;
+import java.util.HashMap;
+import java.util.Map;
+
+/*
+
+here we have to check if s is valid anagram of t or not.
+
+approach 1:
+
+firstly we can sort both the strings then 1 by one for each element of both the strings
+we can check if they are equal or not if all elements are equal then true otherwise false.
+for this we will convert the string into an array of characters, we will put each letter of string separately
+into the array.
+then we will sort both the character array so that each element comes at same index in both the array.
+eg- String a="sunny";
+    char[] a= {"s","u","n","n","y",};
+    and then we will compare both the character array index wise.
+
+
+approach 2:
+
+we can use hashmap, we will create 2 hashmaps, 1 for each string, and we will put each alphabet and its occurrence in it,
+and then we will compare each alphabet occurrence if all are equal then return true otherwise false.
+
+
+
+approach 3:
+
+we can do this with 1 hashmap only,
+we will set 1 string's alphabets and frequencies in hashmap
+and for the 2nd string we will not make another hashmap but
+for each alphabet we will decrease 1 frequency from the hashmap values that will lead us
+to 0's against all the alphabets value, and we will get to know that both string are
+forming an anagram.
+
+
+*/
+
+
+
+
+//public class _17_valid_anagram {
+//  public static void main(String[] args) {
+//    String s = "anagram";
+//    String t = "nagaram";
+//
+//    char[] a = s.toCharArray();
+//    char[] b = t.toCharArray();
+//
+//    Arrays.sort(a);
+//    Arrays.sort(b);
+//
+//    System.out.println(Arrays.equals(a,b));
+//  }
+//}
+
+
+//public class _17_valid_anagram {
+//  public static void main(String[] args) {
+//    String s = "anagram";
+//    String t = "car";
+//
+//    Map<Character,Integer> map1=new HashMap<>();
+//    Map<Character,Integer> map2=new HashMap<>();
+//
+//    char[] a=s.toCharArray();
+//    char[] b=t.toCharArray();
+//
+//    if(s.length()!=t.length()){
+//      System.out.println("false");
+//      return;
+//    }
+//
+//    for(char i:a){
+//      map1.put(i,map1.getOrDefault(i,0)+1);
+//    }
+//    for(char i:b){
+//      map2.put(i,map2.getOrDefault(i,0)+1);
+//    }
+//    //now we will traverse the map to check for each character:
+//
+////    for (Map.Entry<Character, Integer> e : map1.entrySet()) {
+////      if (e.getValue() != map2.getOrDefault(e.getKey(), 0)) {
+////        System.out.println("false");
+////        return;
+////      }
+////    }
+//
+//    //to traverse we can also do like:
+//    for(char c='a';c<='z';c++){
+//      if(map1.getOrDefault(c,0).equals(map2.getOrDefault(c,0))){
+//        System.out.println("false");
+//        return;
+//      }
+//    }
+//
+//    System.out.println("true");
+//  }
+//}
+
+
+
+
+
+
+
+
+
+
+
+
+public class _17_valid_anagram {
+  public static void main(String[] args) {
+    String s = "anagram";
+    String t = "aanargm";
+
+    Map<Character,Integer> map=new HashMap<>();
+
+    char[] c=s.toCharArray();
+    char[] a=t.toCharArray();
+    for(int i=0;i<c.length;i++){
+      map.put(c[i],map.getOrDefault(c[i],0)+1);
+      map.put(a[i],map.getOrDefault(a[i],0)-1);
+    }
+    // for map.put(a[i],map.getOrDefault(a[i],0)-1); we can create a separate loop but we will not.
+    //    for(char i:a ){
+    //      map.put(i,map.getOrDefault(i,0)-1);
+    //    }
+
+    // to traverse the map we can do:
+    //    for(Map.Entry<Character,Integer> e:map.entrySet()){
+    //      if(e.getValue()!=0){
+    //        System.out.println("false");
+    //        return;
+    //      }
+    //    }
+
+    // or to traverse the map we can do:
+    for (int count : map.values()) {
+      if (count != 0) {
+        System.out.println("false");
+        return;
+      }
+    }
+    System.out.println("true");
+  }
+}
+

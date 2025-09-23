@@ -1,0 +1,212 @@
+package com.beginnerdsa.step3._1_Hashing;
+
+/*
+to calculate the sum of 2 non overlaping max sum subarrays.
+
+firstly we will learn about prefix sum,
+prefix array contains sum of all previous array elements till index i.
+
+index are 0 based.
+
+so, i have made an array b having 6 elements, so to make a prefix sum array
+i will start loop from 1 till <b.length. and p[0]=b[0], i will make a prefix sum array
+
+when i want to access the sum of elements till i
+then i can simply do p[i] this will give the sum of elements till i
+for the array b.
+
+p[i]= sum of elements till i.
+
+now i will make 1 more array to store the max sum subarray till index i.
+i.e p1[]
+
+i will start from 0 till <b.length and inside loop i will start
+from i till j>=0 and will do j--;
+and i will calculate sum+=b[j]
+and check if that was greater than the previous sum till index i.
+
+and last I will get all the max sum of subarrays ending at index i.
+
+p1[i] will give me max sum subarray from 0 till index i.
+
+
+
+
+to make this calculating p1[i] more optimized,
+i will use 1 loop:
+suppose we are at index i in array b, so max sum subarray till index i could be
+sum till
+1. p[i-1]+ current element , i.e (all previous element sum + the b[i])
+if that number comes to -ve then we can say only b[i] will be the max sum subarray
+2. b[i]  (it can be the max sum subarray because p[i-1]+ current element could sum up to -ve number)
+of b[i] is also -ve then we can say 0 is the max sum subarray.
+3.0
+
+so we have 3 options:
+1. all previous element sum + current element
+2. only current element
+3. 0
+
+
+after that we will get all the max sum subarray till index i for each i.
+then we can find max of all of them i.e from p1[i] to get max sum subarray
+of whole array.
+
+
+
+
+this above is same as kadane's algo:
+we do not need to store every element of p1[] now
+
+int globalMax = 0;
+int previousMax = 0;
+
+for (int i = 0; i < n; i++) {
+    int currentMax = Math.max(previousMax + b[i], Math.max(b[i], 0));
+    previousMax = currentMax;
+    globalMax = Math.max(globalMax, currentMax);
+}
+
+
+
+
+
+
+
+
+
+this was you must know before jumping to amazon question:
+
+quesiton is: I have to calculate sum of 2 max sum subarrays which are non overlaping.
+
+
+ */
+
+//public class _18_amazon_sde1 {
+//  public static void main(String[] args) {
+//    int[] b = {5, 8, 10, 2, 5, 5};
+//    int n = b.length;
+//
+//    int[] p = new int[n];
+//    p[0] = b[0];
+//    for (int i = 1; i < n; i++) {
+//      p[i] = p[i - 1] + b[i];
+//    }
+//
+//
+//    //to calculate p1 array which is max subarray sum till index i we have 2 methods 1 is O(n*n) and other is O(n)
+//    int[] p1 = new int[n];
+////    for (int i = 0; i < n; i++) {
+////      int sum = 0;
+////      int t = 0;
+////      for (int j = i; j >= 0; j--) {
+////        sum += b[j];
+////        t = Math.max(t, sum);
+////      }
+////      p1[i] = t;
+////    }
+//
+//
+//    //O(N) for calculating p1[] array, then max of p1[0....n] will give max subarray sum of entire array b.
+//    p1[0] = Math.max(b[0], 0);
+//    for (int i = 1; i < n; i++) {
+//      p1[i] = Math.max(p1[i - 1] + b[i], Math.max(b[i], 0));       //no need for 2 loops
+//    }
+//
+//    //now to find max sum subarray in whole array b.
+//    int maxSum = p1[0];
+//    for (int i = 1; i < n; i++) {
+//      if (p1[i] > maxSum) {
+//        maxSum = p1[i];
+//      }
+//    }
+//    System.out.println(maxSum);
+//
+//
+//    //we need to store each element of p1[] we can so like this:
+//    int globalMax = 0;
+//    int previousMax = 0;
+//    for (int i = 0; i < n; i++) {
+//      int currentMax = Math.max(previousMax + b[i], Math.max(b[i], 0));
+//      previousMax = currentMax;
+//      globalMax = Math.max(globalMax, currentMax);
+//    }
+//
+//    //here globalMax will give the max sum subarray of whole array just like max(p1[0]......p1[b.length]) would give.
+//
+//
+//  }
+//}
+
+//the answer:
+import java.util.Scanner;
+
+public class _18_amazon_sde1 {
+  public static void main(String[] args) {
+    Scanner scanner = new Scanner(System.in);
+    int n = scanner.nextInt();
+    int[] nums = new int[n];
+    for (int i = 0; i < n; i++) {
+      nums[i] = scanner.nextInt();
+    }
+    System.out.println("Maximum sum of two non-overlapping subarrays: " +
+            maxTwoNonOverlappingSubarraysSum(nums));
+  }
+
+  public static int maxTwoNonOverlappingSubarraysSum(int[] nums) {
+    int n = nums.length;
+    if (n == 0) return 0;
+
+    int[] prefixMaxSum = calculatePrefixMaxSum(nums);
+    int[] suffixMaxSum = calculateSuffixMaxSum(nums);
+
+    int[] maxPrefixSum = new int[n];
+    maxPrefixSum[0] = prefixMaxSum[0];
+    for (int i = 1; i < n; i++) {
+      maxPrefixSum[i] = Math.max(maxPrefixSum[i - 1], prefixMaxSum[i]);
+    }
+
+    int[] maxSuffixSum = new int[n];
+    maxSuffixSum[n - 1] = suffixMaxSum[n - 1];
+    for (int i = n - 2; i >= 0; i--) {
+      maxSuffixSum[i] = Math.max(maxSuffixSum[i + 1], suffixMaxSum[i]);
+    }
+
+    int maxSum = 0;
+    for (int i = 0; i < n - 1; i++) {
+      maxSum = Math.max(maxSum, maxPrefixSum[i] + maxSuffixSum[i + 1]);
+    }
+
+    return maxSum;
+  }
+
+  public static int[] calculatePrefixMaxSum(int[] nums) {
+    int n = nums.length;
+    int[] prefixMaxSum = new int[n];
+    int currentMax = nums[0];
+    prefixMaxSum[0] = nums[0];
+
+    for (int i = 1; i < n; i++) {
+      currentMax = Math.max(0, Math.max(nums[i], currentMax + nums[i]));
+      prefixMaxSum[i] = currentMax;
+    }
+
+    return prefixMaxSum;
+  }
+
+  public static int[] calculateSuffixMaxSum(int[] nums) {
+    int n = nums.length;
+    int[] suffixMaxSum = new int[n];
+    int currentMax = nums[n - 1];
+    suffixMaxSum[n - 1] = nums[n - 1];
+
+    for (int i = n - 2; i >= 0; i--) {
+      currentMax = Math.max(0, Math.max(nums[i], currentMax + nums[i]));
+      suffixMaxSum[i] = currentMax;
+    }
+
+    return suffixMaxSum;
+  }
+}
+
+

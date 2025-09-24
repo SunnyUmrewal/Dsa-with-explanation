@@ -1,0 +1,81 @@
+package com.beginnerdsa.step3._1_Hashing;
+
+/*
+in order to calculate the minimum steps to make all the piles equal:
+
+we will pick the biggest pile at a time and will make it equal to the secondmax pile in the array and will increase the count...
+so that i will get the minimum number of steps that are required to make all the piles weight equal..
+
+so to do that:
+i need to find the maximum number in array and its index
+then i need to find the secondmax number
+then i will make the number at index of max number , i.e max number equal to the second max number
+and will count this as 1.
+
+i will run this till all the elements in the array are equal.
+so i will run a while loop....
+
+
+
+ */
+// public class _19_zscalerOA {
+//
+//    static boolean allEqual(int[] arr){
+//        for(int i=0;i<arr.length;i++){
+//            if(arr[i]!=arr[0]){
+//                return false;
+//            }
+//        }
+//        return true;
+//    }
+//
+//  public static void main(String[] args) {
+//    int[] arr={1,2,5};
+//    int n=arr.length;
+//    int count=0;
+//    while(!allEqual(arr)){
+//        int max=arr[0];
+//        int secondMax=-1;
+//        int idx=0;
+//        for(int i=1;i<n;i++){
+//            if(arr[i]>max){
+//                secondMax=max;
+//                max=arr[i];
+//                idx=i;
+//            }
+//            else if(arr[i]>secondMax && arr[i]<max){
+//                secondMax=arr[i];
+//            }
+//        }
+//        arr[idx]=secondMax;
+//        count++;
+//    }
+//    System.out.println(count);
+//  }
+// }
+
+import java.util.*;
+
+public class _19_zscalerOA {
+  public static void main(String[] args) {
+    int[] arr = {5, 2, 1};
+    int n = arr.length;
+    TreeMap<Integer, Integer> map = new TreeMap<>(Collections.reverseOrder());
+    for (int i : arr)
+    {
+      map.put(i, map.getOrDefault(i, 0) + 1);
+    }
+    List<Map.Entry<Integer, Integer>> list = new ArrayList<>(map.entrySet());
+
+    int count = 0;
+
+    for (int i = 0; i < list.size() - 1; i++)
+    {
+      count += list.get(i).getValue();
+      Map.Entry<Integer, Integer> entry = list.get(i + 1);
+      Map.Entry<Integer, Integer> e = list.get(i);
+      entry.setValue(entry.getValue() + e.getValue());
+    }
+    System.out.println(count);
+  }
+}

@@ -1,0 +1,52 @@
+package com.beginnerdsa.step3._1_Hashing;
+
+import java.util.HashMap;
+import java.util.Map;
+
+/*
+public class _21_first_unique_character_in_string {
+  public static void main(String[] args) {
+
+    String s = "leetcode";
+    Map<Character, Integer> map = new HashMap<>();
+
+    for (char c : s.toCharArray()) {
+      map.put(c, map.getOrDefault(c, 0) + 1);
+    }
+
+    for (int i = 0; i < s.length(); i++) {
+      if (map.get(s.charAt(i)) == 1) {
+        System.out.println(i);
+        return;
+      }
+    }
+    System.out.println(-1);
+  }
+}
+*/
+
+
+public class _21_first_unique_character_in_string {
+  public static void main(String[] args) {
+    String s = "leetcode";
+
+    int idx = 0;
+
+    Map<Character, Integer> map = new HashMap<>();
+
+    for (int i = 0; i < s.length(); i++) {
+      map.put(s.charAt(i), map.getOrDefault(s.charAt(i), 0) + 1);
+
+      if (map.get(s.charAt(idx)) > 1) {
+        idx++;
+        while (idx < s.length() && map.get(s.charAt(idx)) > 1) {
+          idx++;
+        }
+        if (idx == s.length()) {
+          System.out.println("no unique char found");
+        }
+      }
+    }
+    System.out.println(idx);
+  }
+}

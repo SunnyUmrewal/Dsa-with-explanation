@@ -1,0 +1,63 @@
+package com.beginnerdsa.step3._1_Hashing;
+
+import java.util.HashMap;
+import java.util.Map;
+import java.util.List;
+import java.util.ArrayList;
+
+
+/*
+we need to find common character in all the strings.
+we will make 2 hashmaps.
+1st we will put 1st char all alphabets and their frequency in the main map i.e our minMap. then
+in countMap hashmap we will count the number of char in each letter 1 by 1. will start from 2nd word in array.
+
+then after putting 2nd char alphabets and their frequency in countmap we will replace the frequency of alphabets
+present in minmap by minimum of alphabets frequency in countmap.
+
+this we will do till last.
+
+*/
+
+public class _22_Find_common_character {
+    public static void main(String[] args){
+        String[] words={"bella","label","roller"};
+        Map<Character, Integer> minMap = new HashMap<>();
+        Map<Character, Integer> countMap = new HashMap<>();
+
+        String word = words[0];
+
+        for (int i = 0; i < word.length(); i++) {
+            char c = word.charAt(i);
+            minMap.put(c, minMap.getOrDefault(c, 0) + 1);
+        }
+
+        for (int i = 1; i < words.length; i++) {
+            word = words[i];
+            countMap.clear();
+
+            for (int j = 0; j < word.length(); j++) {
+                char c = word.charAt(j);
+                countMap.put(c, countMap.getOrDefault(c, 0) + 1);
+            }
+
+            for (Character c : minMap.keySet()) {
+                if (countMap.containsKey(c)) {
+                    minMap.put(c, Math.min(minMap.get(c), countMap.get(c)));
+                } else {
+                    minMap.put(c, 0);
+                }
+            }
+        }
+
+        List<String> list = new ArrayList<>();
+        for (Character key : minMap.keySet()) {
+            for (int i = 0; i < minMap.get(key); i++) {
+                list.add(key + "");
+            }
+        }
+
+        System.out.println(list);
+    }
+}
+

@@ -1,9 +1,10 @@
 # Dsa-with-explanation-Java
 This repo contains dsa questions for all the beginner to advance of each topic that can help you create strong problem solving skills
-this can help you start your dsa journey or revise the most important questions.
+this can help you start your dsa journey or revise the important questions according to latest DSA trends in market (2026).
 
-things to remember while doing each question if you are beginner:
-1. Do not I repeat DO NOT use any AI to explain the code in easy language or find any kind of external help, use your own brain that will help you grow.
-2. Use "Ideone.com" to save your personal code, which will help you revise.
+Things to remember while doing DSA:
+1. Do not I repeat DO NOT use any AI to explain the code in easy language, if you have written the logic do not try to make code through AI write your own code.
+2. Prepare topic-wise doc. that will contain questions link and a 2 liner approach of how to solve that question. Use "Ideone.com" to save your personal code, which will help you revise.
 3. Revise your code on weekly or within 3 days that is the best method to get concept.
-4. Creat a google doc to keep the track of questions which you couldn't solve and write the explanation your words and add the code url of ideone,
+4. Try to code daily, even if you have to do it for 30 min. or just solve a easy question but do it daily.
+ 

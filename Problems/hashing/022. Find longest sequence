@@ -1,0 +1,176 @@
+package com.beginnerdsa.step3._1_Hashing;
+
+//brute force:
+/*
+
+ public class _23_longest_sequence {
+  public static void main(String[] args) {
+    int[] nums = {0,1,2,3,4,5,6,7,8};
+    int ans = 1;
+    Arrays.sort(nums);
+
+    for(int i=0;i<nums.length;i++){
+      int count=1;
+      for(int j=i+1;j<nums.length;j++){
+        if(nums[i]+1==nums[j]){
+          count++;
+          i=j;        //important
+        }
+      }
+      ans = Math.max(ans, count);
+    }
+    System.out.println(ans);
+  }
+ }
+
+ */
+
+
+/*
+import java.util.HashMap;
+import java.util.Map;
+
+public class _23_longest_sequence {
+  public static void main(String[] args) {
+
+    //using 2 hashmap:
+    int[] nums = {100, 4, 200, 1, 3, 2};
+
+    Map<Integer, Boolean> presentMap = new HashMap<>();
+    Map<Integer, Boolean> checkedMap = new HashMap<>();
+
+    // store all numbers as present
+    for (int num : nums) {
+      presentMap.put(num, true);
+      checkedMap.put(num, false); // initially not visited
+    }
+
+    int longest = 0;
+
+    for (int num : nums) {
+      // skip if already visited
+      if (checkedMap.get(num)) continue;
+
+      // check if it's a sequence start
+      if (!presentMap.containsKey(num - 1)) {
+        int curr = num;
+        int length = 0;
+
+        while (presentMap.containsKey(curr) && !checkedMap.get(curr)) {
+          checkedMap.put(curr, true); // mark visited
+          curr++;
+          length++;
+        }
+
+        longest = Math.max(longest, length);
+      }
+    }
+
+    System.out.println(longest);
+
+ */
+
+
+
+
+
+import java.util.HashSet;
+import java.util.Set;
+
+public class _23_longest_sequence {
+  public static void main(String[] args) {
+    int[] arr = {100, 4, 200, 1, 3, 2};
+    Set<Integer> present = new HashSet<>();
+    int ans = 0;
+
+    for (int i : arr) {
+      present.add(i);
+    }
+
+    for (int num : arr) {
+      // check only if it's start of a sequence
+      if (!present.contains(num - 1)) {
+        int count = 1;
+        int curr = num + 1;
+
+        while (present.contains(curr)) {
+          count++;
+          curr++;
+        }
+
+        ans = Math.max(ans, count);
+      }
+    }
+
+    System.out.println(ans);
+
+  }
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+/*
+
+    //using 2 hashmap:
+
+    int[] arr = {100, 4, 200, 1, 3, 2};
+    Map<Integer, Boolean> presentmap = new HashMap<>();
+    Map<Integer, Boolean> checkedmap = new HashMap<>();
+    int ans = 0;
+
+    for (int i : arr) {
+      presentmap.put(i, true);
+    }
+
+    for (int i = 0; i < arr.length; i++) {
+      if (!checkedmap.containsKey(arr[i])) {
+        checkedmap.put(arr[i], true);
+
+        // check if arr[i] is the start of a sequence
+        if (!presentmap.containsKey(arr[i] - 1)) {
+          int count = 1;  // reset count for each sequence
+          int j = 1;
+
+          while (presentmap.containsKey(arr[i] + j)) {
+            checkedmap.put(arr[i] + j, true); // mark visited
+            count++;
+            j++;
+          }
+
+          ans = Math.max(count, ans);
+        }
+      }
+    }
+
+    System.out.println(ans);
+ */
+
+
+
+
+
+
+
+
+
+
+
+
+

@@ -1,0 +1,97 @@
+package com.beginnerdsa.step3._1_Hashing;
+
+// to count the number of sequence 'lc' is occuring in the string
+/*
+eg- 'LCLLC'
+there are 4 LC'S that can be made from here,
+01, 04, 24, 34
+
+so to do this we need to go to each index i and check if that index has C
+then how many L are there before it.
+
+
+ */
+/*
+public class _26_LC_460 {
+  public static void main(String[] args) {
+    String s = "LCLLC";
+    int l = 0;
+    int lc = 0;
+    for (int i = 0; i < s.length(); i++) {
+      char ch = s.charAt(i);
+      if (ch == 'L') {
+        l++;
+      }
+      if (ch == 'C') {
+        lc += l;
+      }
+    }
+    System.out.println(lc);
+  }
+}
+*/
+
+/*
+now we need to find the sequence of LCT
+so to do this we need to find that
+if at index i we found T then we need to count the LC form 0 till i-1
+ */
+
+public class _26_LC_460 {
+  public static void main(String[] args) {
+    String s = "LCTLLCT";
+    int l = 0;
+    int lc = 0;
+    int lct=0;
+    for (int i = 0; i < s.length(); i++) {
+      char ch = s.charAt(i);
+      if (ch == 'L') {
+        l++;
+      }
+      if (ch == 'C') {
+        lc += l;
+      }
+      if(ch=='T'){
+        lct+=lc;
+      }
+    }
+    System.out.println(lc);
+  }
+}
+
+/*
+now we need to find the scequence LCT and after doing that
+we need to insert a letter from L,C,T at any index and after doing
+that we should get max count of lct sequence
+
+so we will try to inset L
+so L should be inserted at the starting...
+new answer = old_answer + count of “CT” in the string[0……n-1]
+as we will get 1 extra sequence for each CT
+
+
+if we try to insert T
+so we should at that at the end of the string
+new answer=old answer+ count of lc from 0 to n-1
+
+and if we insert C
+then we cannot just insert at the index before the last T
+doing that is not optimized for max sequence
+
+instead for each index i we need to insert it at each index
+and check if L before that C * T after that C is max?
+
+eg-
+String = LLTT
+Target = LCT
+
+Insert C before first T:
+#L before = 2, #T after = 2 → 4 new subsequences
+
+Insert C before last T:
+#L before = 2, #T after = 1 → 2 new subsequences
+
+at last we will check which gives the max count and we return it.
+
+
+ */

@@ -1,0 +1,124 @@
+package com.beginnerdsa.step3._2_Two_Pointer;
+
+/*
+
+when question is of the format:
+something from [i...j] is <=k
+eg- find number of subarray such that some quality of that subarray is <=k
+
+here we are discussing the count of subarrays where sum<=k
+
+for understanding, we need to find subarray whose sum<=k
+
+GIVEN THAT ALL NUMBER IN ARRAY ARE >=0
+
+eg- [2,1,1,5,8] k<=4
+
+valid subarrays: [0-0] [0-1] [1-1]
+                 [2-2] [1-2] [0-2]
+
+
+These are 6 subarrays that are valid here.
+
+Brute force:
+*/
+
+import java.util.Scanner;
+
+/*
+public class _01_Basics {
+  public static void main(String[] args) {
+    Scanner scanner = new Scanner(System.in);
+    long n = scanner.nextLong();
+    long k = scanner.nextLong();
+    long[] b = new long[(int) n];
+
+    for (int i = 0; i < n; i++) {
+      b[i] = scanner.nextLong();
+    }
+
+    long count = 0;
+
+    for (int i = 0; i < n; i++) {
+      long sum = 0;
+      for (int j = i; j < n; j++) {
+        sum += b[j];
+        if (sum <= k) {
+          count++;
+        }
+      }
+    }
+    System.out.println(count);
+
+  }
+}
+
+//TC: O(N^2)
+//SC: O(1)
+
+*/
+
+/*
+for efficient approach:
+
+only if we have non-negative number!
+
+eg- [2,1,1,8,2,2]
+
+i will start from i=0 and j=0
+
+suppose when i am at j=2 then that means i have already checked all the
+previous subarrays possible say
+2,1,12     when i was 0 and j was 0 and 1.
+
+when i am at j=2 then if the subarray [2,1,1]
+will have sum <=k then that means all the subarrays that
+could be made from [2,1,1] will have sum<=k i.e total subarrays possibly made from [2,1,1] =j-i+1 i.e the length of the subarray
+i.e- 1,11,211
+why i am not making 2,21 or 21 because when j was 0 and 1 we had already calculated for these subarrays. so no need to recalculate
+if i am at i=0 and j=3 and the sum[2,1,1,8] subarray is not <=k then i will increase the i by 1 and will
+remove the sum of that i from the total sum variable.
+and i will check for subarray from i=1 to j=3 and i will not start again from i=1 and j=1 because
+all the subarrays have been already calculated earlier when i was at i=0 and j=3 so i will not do that again...
+
+and will count the length of each subarray when i is fixed and j is moving.
+
+
+
+*/
+public class _01_Basics {
+  public static void main(String[] args) {
+    Scanner scanner = new Scanner(System.in);
+    int n = scanner.nextInt();
+    long k = scanner.nextLong();
+    long[] b = new long[n];
+
+    for (int i = 0; i < n; i++) {
+      b[i] = scanner.nextLong();
+    }
+
+    long count = 0;
+    long sum = 0;
+    for (int i = 0, j = 0; j < n; j++) {
+      sum += b[j];
+      while (sum > k) {
+        sum -= b[i];
+        i++;
+      }
+      count += (j - i + 1);
+    }
+
+    System.out.println(count);
+    scanner.close();
+  }
+}
+
+
+/*
+
+Use hashing when you need to count frequencies or store and quickly access elements by key.
+
+Use two-pointer approach when you need to find subarrays or pairs that satisfy conditions, often relating to sums or other properties bounded by
+k
+
+ */

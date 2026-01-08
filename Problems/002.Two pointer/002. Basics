@@ -1,0 +1,78 @@
+package com.beginnerdsa.step3._2_Two_Pointer;
+
+/*
+for the two pointer questions we know we have to use the template
+
+so for :
+ Number of subarrays whose count of distinct number <= K
+
+brute force:
+
+we will generate all the subarrays and will check after adding each element that if
+number count is <=k if yes then we keep adding the numbers and if not then
+we increase the i and will start the j loop again from i
+
+
+ */
+
+
+import java.util.HashMap;
+import java.util.Map;
+
+/*public class _02_Basics {
+        public static int countSubarraysWithAtMostKDistinct(int[] arr, int K) {
+            int n = arr.length;
+            int count = 0;
+            for (int i = 0; i < n; i++) {
+                Map<Integer,Integer> map = new HashMap<>();
+                for (int j = i; j < n; j++) {
+                    map.put(arr[j],map.getOrDefault(arr[i],0)+1);
+                    if (map.size() <= K)
+                        count++;
+                }
+            }
+            return count;
+        }
+
+    public static void main(String[] args) {
+        int[]arr={1,2,3,4,5,6,7,8,9,0};
+        int k=4;
+        int count=0;
+        System.out.println(countSubarraysWithAtMostKDistinct(arr, k));
+
+    }
+}*/
+
+
+/*
+
+for optimized approach:
+
+
+
+*/
+
+public class _02_Basics {
+    public static void main(String[] args) {
+        int[]arr={1,2,3,4,5,6,7,8,9,0};
+        int k=4;
+        int count=0;
+        Map<Integer,Integer> map=new HashMap<>();
+
+        for(int i=0,j=0;j<arr.length;j++){
+            map.put(arr[j],map.getOrDefault(arr[j],0)+1);
+            int size=map.size();
+            while(size>k){
+                map.put(arr[i],map.get(arr[i])-1);
+                if(map.get(arr[i])==0){
+                    map.remove(arr[i]);
+                }
+                i++;
+                size=map.size();
+            }
+            count+=j-i+1;
+        }
+        System.out.println(count);
+    }
+}
+

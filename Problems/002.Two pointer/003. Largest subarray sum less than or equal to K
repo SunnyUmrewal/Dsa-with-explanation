@@ -1,0 +1,55 @@
+package com.beginnerdsa.step3._2_Two_Pointer;
+
+/*
+to find the longest length of the subarray whose sum<=k
+
+this we cannot do with hashing and prefix, we can do of sum=k
+not <=k.
+
+for this we need two pointer.
+*/
+
+public class _02_Largest_subarray_with_sum_less_than_or_equal_to_k {
+  public static void main(String[] args) {
+    int[] arr = {1, 2, 3, 4, 5};
+    int mxlen = 0;
+    int sum = 0;
+    int k = 10;
+    for(int i=0;i<arr.length;i++){
+      sum=0;
+      for(int j=i;j<arr.length;j++){
+        sum+=arr[j];
+        if(sum<=k){
+          mxlen=Math.max(j-i+1,mxlen);
+
+        }
+      }
+    }
+    System.out.println(mxlen);
+  }
+}
+
+
+/*
+public class _02_Largest_subarray_with_sum_less_than_or_equal_to_k {
+  public static void main(String[] args) {
+    int[] arr = {1, 2, 3, 4, 5};
+    int mxlen = 0;
+    int length = 0;
+    int sum = 0;
+    int k = 10;
+
+    for (int i = 0, j = 0; j < arr.length; j++) {
+      sum = sum + arr[j];
+      while (sum > k) {
+        sum -= arr[i];
+        i++;
+      }
+      length = j - i + 1;
+
+      mxlen = Math.max(length, mxlen);
+    }
+    System.out.println(mxlen);
+  }
+}
+*/

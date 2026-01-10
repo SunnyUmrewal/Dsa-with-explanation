@@ -1,0 +1,140 @@
+package com.beginnerdsa.step3._2_Two_Pointer;
+
+/*
+given an array of size n, and 2 players p1 and p2
+each one turns comes 1 by one
+iterate through array, if number is odd then add that number to respective players score board
+and if the number added is even then reverse the remaining elements in the array and do next iteration with that sequence.
+at last print p1score-p2score.
+
+
+
+ */
+
+/*
+public class _03_players_score_p1_p2
+{
+    public static void main(String[] args) {
+        int[] arr={3,6,2,3,5};
+        int p1=0;
+        int p2=0;
+        int i=0;
+
+        while(i<arr.length){
+            p1+=arr[i];
+            if(arr[i]%2==0 && i!=arr.length-1){
+                int[] temp=new int[arr.length-i-1];
+
+                for(int j=arr.length - 1,k=0; j>i ;j--){
+                    temp[k]=arr[j];
+                    k++;
+                }
+
+                int s=i+1;
+                for(int t=0;t<temp.length;t++){
+                    arr[s]=temp[t];
+                    s++;
+                }
+                i++;
+            }
+            else{
+                i++;
+            }
+            if (i >= arr.length) break;
+            p2+=arr[i];
+            if(arr[i]%2==0 && i!=arr.length-1){
+                int[] temp=new int[arr.length-i-1];
+
+                for(int j=arr.length - 1,k=0; j>i ;j--){
+                    temp[k]=arr[j];
+                    k++;
+                }
+                int s=i+1;
+                for(int t=0;t<temp.length;t++){
+                    arr[s]=temp[t];
+                    s++;
+                }
+                i++;
+            }
+            else{
+                i++;
+            }
+
+        }
+        System.out.println(p1-p2);
+    }
+}
+*/
+
+
+
+public class _03_players_score_p1_p2
+{
+    public static void main(String[] args){
+        int[] arr={3,6,2,3,5};
+        int p1=0;
+        int p2=0;
+        boolean rev=false;
+        int start=0;
+        int end=arr.length-1;
+
+        int turn=1;
+        while(start<=end){
+            if(turn %2!=0){
+                if(rev==false){
+                    p1+=arr[start];
+                    if(arr[start]%2==0){
+                        rev=true;
+                    }
+                    start++;
+                }
+                else{
+                    p1+=arr[end];
+                    if(arr[end]%2==0){
+                        rev=false;
+                    }
+                    end--;
+                }
+                turn++;
+
+            }
+
+            else{
+                if(rev==true){
+                    p2+=arr[end];
+                    if(arr[end]%2==0){
+                        rev=false;
+                    }
+                    end--;
+                }
+                else {
+                    p2 += arr[start];
+                    if (arr[start] % 2 == 0) {
+                        rev = true;
+                    }
+                    start++;
+                }
+                turn++;
+            }
+        }
+        System.out.println(p1-p2);
+
+    }
+
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

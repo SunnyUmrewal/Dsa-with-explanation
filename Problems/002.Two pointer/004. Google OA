@@ -1,0 +1,162 @@
+package com.beginnerdsa.step3._2_Two_Pointer;
+/*
+
+we need to print the count of numbers where
+arr[i]+arr[j]>k1 and arr[k]+arr[l]>k2
+where i<j<k<l
+
+
+ */
+/*
+public class _04_google_oa {
+    public static void main(String[] args){
+        int[] arr={1,1,1,1,2,2};
+        int n=arr.length;
+        int k1=1;
+        int k2=3;
+
+        for(int i=0;i<n;i++){
+            for(int j=i+1;j<n;j++){
+                for(int k=j+1;k<n;k++){
+                    for(int l=k+1;l<n;l++){
+                        if(arr[i]+arr[j]>k1 && arr[k]+arr[l]>k2){
+                            System.out.println(i+","+j+","+k+","+l);
+                        }
+                    }
+                }
+            }
+        }
+    }
+}
+*/
+
+/*
+
+before the real optimization we need to solve other question
+find count of pairs where arr[i]+arr[j]>k such that i<j
+this we can do with hashmap also but now we will do with two pointer for optimized in this question
+
+*/
+
+/*
+int[] arr={1,3,4,5,8}  k=5,  sorted array
+N=5 (length of arr)
+we will take 2 pointers pointing to start and end of array,
+and then we check-->
+(1,N)
+1,8 are >5 so this gives us thinking that
+all the pairs like (3,8)(4,8)(5,8) will be automatically valid
+then we will subtract the end pointer and now end pointer will point to 5
+so (1,5) then we see if this is valid then all the pair coming in between like (3,5)(4,5) are also valid
+so we will subtract the end pointer if this is not valid
+just like when we do (1,4)
+then we increase start pointer because if 1,4 are not valid then how the subtracting end pointer again will make things valid.
+so we increase the start pointer.
+*/
+
+/*
+-> N;
+-> a[N+1];
+-> k
+
+i=1 j=N
+while(i<j){
+    if(a[i] + a[j]>k){
+        c = c + (j-i) //(i,j),(i+1,j),.....(j-1,j)
+        j--;
+    }else{
+
+        i++;
+    }
+
+}print(c)
+
+*/
+
+/*
+now the real version:
+Given an array a[ ] of size N and two values k1 and k2,
+count the number of valid quadruples (i, j, k, l) such that:
+1≤i<j<k<l≤N
+a[i]+a[j]>k1
+a[k]+a[l]>k2
+
+
+now suppose we have and array and we fixed index j somewhere in between index 2 to n-2 because thats his range
+
+now we know that i will be found till j-1
+and for k and l loop will be from j+1 till n
+so,
+
+we will run a main loop from j=2 to j=n-2
+and in that we will run 2 separate loops to find the pairs that satisfies the condition
+for each j:
+
+1 loop:
+from i=0 to j-1 we will count the pair that satisfies a[i]+a[j]>k1
+
+2 loop:
+from k=j+1 till N we will count pair that satisfies a[k]+a[l]>k2
+
+we thought two pointer because we were given with SORTED array, and we have to find
+some pairs whose quality of pair were >k
+so this was something in two pointer definition.
+and we thought the main loop to run from index of j's only because
+
+if we fixed i so for j,k,l we needed 3 loops making time comp. o(n3)
+if fixed k then we need 2 nested loops for i and j so making time comp. o(n3) in total
+and in l, we need i,j,k 3 loop so again time comp. o(n3)
+
+and for j, we only needed 1 loop for (i,j) pair and classic two pointer for (k,l) pair.
+
+*/
+
+
+
+
+public class _04_google_oa {
+    public static void main(String[] args) {
+
+        int[] a = {1,3,4,5,8};
+        int k1 = 6;
+        int k2 = 7;
+
+        int n = a.length;
+        int count = 0;
+
+       // Arrays.sort(a);     // required for two-pointer on right side
+
+        // j is the main splitter index
+        for (int j = 1; j <= n - 3; j++) {
+
+            // --------------------
+            // LEFT SIDE: (i, j)
+            // --------------------
+            for (int i = 0; i < j; i++) {
+                if (a[i] + a[j] > k1) {
+                    count++;
+                }
+            }
+
+            // --------------------
+            // RIGHT SIDE: (k, l)
+            // --------------------
+            int k = j + 1;
+            int l = n - 1;
+
+            while (k < l) {
+                if (a[k] + a[l] > k2) {
+                    count += (l - k);   // all pairs valid
+                    l--;
+                } else {
+                    k++;
+                }
+            }
+        }
+
+        System.out.println(count);
+    }
+}
+
+
+

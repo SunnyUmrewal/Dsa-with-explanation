@@ -1,0 +1,99 @@
+package com.beginnerdsa.step3._3_binary_search;
+/*
+we need to find the nth root of a number m,  (m)^1/n
+and if the answer is integer then return it, if answer is not integer then return -1.
+
+so for brute force,
+we have math power function => Math.pow(m, 1.0/n);
+there is a need to do 1.0 in 1.0/n because in java 1/n will always return 0 as it returns only the integer part and
+discard the decimal part so we need to divide n by 1.0 to get the floating part.
+
+so to match the answer with m at last we need correct integer value then we return m or 1.0/n else -1
+
+so: public class Solution {
+    public static int NthRoot(int n, int m) {
+    double root = Math.pow(m, 1.0 / n);
+    int r = (int)Math.round(root);
+    return Math.pow(r, n) == m ? r : -1;
+    }
+}
+
+for the optimized we use binary search:
+
+so first we simplify our expression :
+
+(m)1^n = a
+(m)1^n * n = a^n  (both side power n )
+m=a^n
+
+so we need to find "a" so that it satisfies the equation
+a^n=m
+so where does our answer lie between:
+
+minimum value a can have is 1: as when m=1 so any power to "a" gives 1 so we need a as 1.
+maximum value a can have is m: as when m=5  so we need a^1 i.e 5^1 to get a^n==m so a range goes from 1 to m.
+
+so we try on different values of a  from 1 to m that where our condition a^n==m matches if yes then return a
+else: return -1;
+
+
+
+
+for optimized we used binary search:
+
+eg- n=3, m=27
+
+we need to find "a" which can be in decimal also, so we need "a"^n==27, so a can be from 1 to m anywhere in between.
+//so l=1 , r=27
+
+l=1, r=27, mid=14    we know 14^3>>27 so we shrink the right but we do r=mid, because if we did r-1 then we may loose our answer, what is we were finding 13.500000 but if we did r-1 then we lost as our range become l=1, r=13
+l=1, r=14, mid=7.5  7.5>>>27
+l=1, r=4.25, mid=2.625   2.625<27 so we shrink left by l=mid, because if we did l=mid+1 so we might lose our answer as what if we were finding 1.2 but if we did l=mid+1 so l becomes 2.
+l=2.625, r=4.25, mid= 3.4375  3.4375>>27
+l=2.625, r=3.4375, mid= 3.03125 , 3.03125>27 so we need accurate answer till 6 decimal point, only tolerance we can tolerate is till 0.0000001, if we get mid from 3.000000 till 3.0000001 we will accept it.
+.
+.
+.
+.
+at somewhere we will find 3.000000
+so we return 3.000000 or left as at last left will point to that index.
+
+so we will work loop till right-left > 1e-6 i.e precision till 6 decimal point
+inorder to get the correct answer till 6 decimal point.
+
+
+
+ */
+public class _05_BS_nth_root_of_m {
+    public static double nthRoot(int n, double m) {
+        double low = 0;
+        double high = m;
+
+        while (high - low > 1e-7) { // precision condition
+            double mid = low + (high - low) / 2.0;
+
+            if (power(mid, n) < m)
+                low = mid;
+            else
+                high = mid;
+        }
+
+        double ans = (low + high) / 2.0;
+        return Math.round(ans * 1e6) / 1e6; // 6 decimal rounding
+    }
+
+    private static double power(double a, int n) {
+        double res = 1.0;
+        for (int i = 0; i < n; i++) {
+            res *= a;
+        }
+        return res;
+    }
+
+    public static void main(String[] args) {
+        System.out.println(nthRoot(3, 27)); // Output: 3.000000
+    }
+}
+
+
+

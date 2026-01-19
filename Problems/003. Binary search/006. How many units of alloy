@@ -1,0 +1,77 @@
+package com.beginnerdsa.step3._3_binary_search;
+/*
+public class _06_BS_how_many_unit_of_alloy {
+    public static void main(String[] args) {
+
+        int[] req={1,2};
+        int[] stock={0,1};
+        int[] cost={1,1};
+        int budget=3;
+        int answer=0;
+        boolean b=false;
+        int i=1;
+        int[] need=new int[req.length];
+
+        while(b==false){
+            //check for i units..
+            int sum=0;
+            for(int j=0;j<req.length;j++){
+                need[j]=(req[j]*i)-stock[j];
+//              need[j]-=stock[j];
+                if(need[j]<0){
+                    need[j]=0;
+                }
+                sum+=need[j]*cost[j];
+
+            }
+            if(sum<=budget){
+                answer=i;
+                i++;
+            }
+            else {
+                System.out.println(answer);
+                b=true;
+            }
+        }
+    }
+}*/
+
+public class _06_BS_how_many_unit_of_alloy {
+    public static void main(String[] args) {
+        int[] req = {1, 2};
+        int[] stock = {0, 1};
+        int[] cost = {1, 1};
+        int budget = 3;
+
+        long answer = 0;
+        long[] need = new long[req.length];
+
+        long left = 0;
+        long right = (long) 1e10;
+
+        while (left <= right) {
+            long mid = (left + right) / 2;
+            long sum = 0;
+
+            for (int j = 0; j < req.length; j++) {
+                need[j] = (long) req[j] * mid - stock[j];     //no need of the need array we can just use a long variable to store the values for each unit iterations
+//              need[j]-=stock[j];
+                if (need[j] < 0) {
+                    need[j] = 0;
+                }
+                sum += need[j] * cost[j];
+            }
+
+            if (sum <= budget) {
+                answer = mid;
+                left = mid + 1;
+            } else {
+                right = mid - 1;
+            }
+        }
+        System.out.println(answer);
+    }
+}
+
+
+

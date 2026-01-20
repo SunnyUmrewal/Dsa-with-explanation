@@ -1,0 +1,94 @@
+package com.beginnerdsa.step3._4_Greedy;
+/*
+greedy algorithm:
+
+basics:
+given an array of size "N"; b[i] represent the happiness you will get by selecting
+the ith element.
+we need to find k elements so that happiness is maximized.
+-->
+we will select k largest elements from the array
+eg= arr=[1,2,3,4,5], k=2
+we will select 2 largest elements from the array, so
+sort the array, iterate from end and select k elements.
+
+this is greedy algorithm,
+
+this is also used in 2 pointer and dynamic programming also.
+
+how to know if greedy is correct:
+if the current step we are making is good for present as we ll as
+future then our greedy algo is correct.
+i.e local optimal solution is giving global optimal solution.
+
+
+question:
+
+given 2 arrays a and b: we need to
+minimize summation of a[i]*b[i], we are allowed to rearrange the elements of a and b.
+
+
+solution:
+so for eg:
+a=1,8,5
+b=-1,0,80
+
+a[i]*b[i] gives here: 399
+but if we try to rearrange the array elements in a specific format like in eg:
+
+a=1,2,3
+b=1,2,3
+intuition way here is we can feel that:
+we know if we multiply a big number with another big number then we get a bigger number,
+however if we multiply a big number with a small number we get smaller output so we can make an array in ascending and 1 array in descending
+and then do a[i]*b[i] to get minimum sum.
+
+what about negative number:
+eg- a=1,2,3
+    b=-1 -4 -7
+    here a is in ascending and b is in descending so this will also give the most negative number so sum will also be minimum here.
+
+
+logical way for this : (exchange argument lemma):
+
+initially we assume that following condition is the best case:
+a1<=a2<=a3<=a4<=a5
+b1>=b2>=b3>=b4>=b5
+
+so how to know if this is correct:
+
+we try to prove it false--> if are not able to prove that wrong --> it means original argument is correct we assumed right.
+
+
+If this is correct sum1 = a1*b1 + a2*b2 + a3*b3 + a4*b4 + a5*b5
+                        = g + a2*b2 + a4*b4  (g = constant = a1*b1+ a3*b3 + a5*b5)
+
+counter argument: someone say sum1 is wrong, but when we swap a2 and a4 then sum2 is correct, so we try to prove our argument wrong.
+
+Sum 2 = a1*b1 + a4*b2 + a3*b3 + a2*b4 + a5*b5
+      = g + a4*b2 + a2*b4 (g= constant)
+
+if we proved:
+sum2-sum1>=0
+ then we would know that sum1<=sum2 then we would know the counter argument is wrong and out assumption we took initially
+ was correct and hence proved our answer was correct.
+
+
+ so we will try to do it.
+ and finally we will get :
+ (a4-a2)*(b2-b4) >=0  (if we check from any sequence s1 or s2)
+
+ finally we would know
+ if we check from sum1 < sum2
+ hence proved that swapping the number will destroy the minimization of the number.
+
+ hence proved the attack argument is wrong.
+
+
+*/
+
+public class _01_Intro {
+    public static void main(String[] args) {
+
+    }
+}

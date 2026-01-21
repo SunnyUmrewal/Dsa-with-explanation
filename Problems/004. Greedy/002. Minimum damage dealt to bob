@@ -1,0 +1,209 @@
+package com.beginnerdsa.step3._4_Greedy;
+/*
+we are given with a damage array that tells that how much damage enemy does to bob.
+also given with a health array or say time array which tells how much health of enemy is left.
+
+so say for every second we can do 1 damage to an enemy
+so when health of an enemy will <=0 then he will stop damaging bob.
+
+eg= damage=[1,2]  time=[2,5]
+
+so if i try to kill 1st enemy i.e which gives damage 1, then it will require 2 seconds until its health is 0.
+sec=1 : damage to bob = [1,2]
+sec=2 : damage to bob = [1,2]
+      damage till now = 6
+
+now enemy 1 is finished now kill 2nd enemy
+
+sec=3 : damage to bob = [0,2]
+sec=4 : damage to bob = [0,2]
+sec=5 : damage to bob = [0,2]
+sec=6 : damage to bob = [0,2]
+sec=7 : damage to bob = [0,2]
+      damage till now = 10
+
+      total damage= 16.
+
+
+now if we try to kill 2nd enemy first:
+sec=1 : damage to bob = [1,2]
+sec=2 : damage to bob = [1,2]
+sec=3 : damage to bob = [1,2]
+sec=4 : damage to bob = [1,2]
+sec=5 : damage to bob = [1,2]
+      damage till now = 15
+
+    now kill 1st enemy:
+
+sec=6 : damage to bob = [1,0]
+sec=7 : damage to bob = [1,0]
+      damage till now = 2
+
+
+      total damage : 17
+
+we need to make minimum damage to bob and kill all the enemies, so we need to select our enemy wisely before killing any enemy.
+
+the damage per second can also be variable but we are taking 1 as eg.
+
+so,
+eg=  d=[1,1] m=[2,5]
+
+we kill 1st : 1,1
+              1,1
+   then 2nd : 0,1
+              0,1
+              0,1
+              0,1
+              0,1
+       total= 9
+
+we kill 2nd: 1,1
+             1,1
+             1,1
+             1,1
+             1,1
+             1,0
+             1,0
+      total =12
+
+   so killing 1st then 2nd is best option:
+
+   we can conclude that : if damages of all enemies are same then we kill the enemy that takes less time to be killed.
+
+
+eg- d=[2,5] m=[1,1]
+
+we kill 2nd:  2,5
+   then 1st:  2,0
+   total   :  9
+
+
+we kill 1st: 2,5
+   then 2nd: 0,5
+   total   : 12
+
+so when time to kill/ health of all enemies are same then we try to kill the enemy that is doing more damage.
+
+so what if we have a general case:
+
+eg= d=[2,5]  m=[4,6]
+
+we can find a pattern from above that:
+ we are killing enemy with most damage and least time to kill
+
+ so we will select enemy who has high damage and least time to kill.
+
+ i.e: we will do d[i]/m[i] for all the enemies and select accordingly who has high d[i]/m[i] ratio
+ as high d and low m will give higher ratio.
+
+ if d[i]/m[i] > d[j]/m[j] --> then kill ith guy
+
+so we have a counter-argument that killing the jth guy first them ith guy will give us the least sum.
+i.e : sum1 ( i--> j) =(di+dj)mi+ djmj
+                     = g+ djmi
+
+      sum2 (j--> i) =(di+dj)mj + dimi
+                    = g+ dimj
+
+
+      so we compute : s2-s1
+                      dimj - djmi
+
+ so, from our assumption order :
+ d[i]/m[i] > d[j]/m[j]
+ multiply both side by mimj
+
+ so dimj>=djmi
+
+ so s2>=s1
+ do now we know swapping the assumed answer will worsen the solution so now we know
+ our assumed sequence of di/mi >= dj/mi is correct. hence proved.
+
+
+-Greedy Rule
+Sort enemies by decreasing
+
+-Why Exchange Argument Works Here
+Total damage depends on how long high-damage enemies stay alive
+The ratio balances:
+High damage
+Short kill time
+
+-What You Always Do in These Problems
+Guess greedy rule (ratio, min, max, etc.)
+Assume optimal order follows it
+Swap two neighbors
+Compare cost
+Use assumption to sign inequality
+Conclude swap doesn’t help
+Therefore greedy is optimal
+
+
+
+but in the question we are not given with the time array that tells how much time does it take to kill the enemy
+but we are given with the health array that tells how much health of enemy is left and a power integer
+that tells how damage per second is bob doing to enemies along with a damage array which tells how much damage
+bod is getting after every second.
+
+power=4 , damage= [1,2,3,4] , health= [4,5,6,8]
+
+so first bob decided to kill the enemy 4th: then
+at 1st second bob will get 1+2+3+4 = 10 damage
+                          and bob will reduce health 8 of enemy 4th to 4 as the power bob has is 4 per second.
+                 so we do health[i]/power this will tell how much moves are required by bob to kill each enemy
+
+
+         so now the question turn
+
+         damage=[1,2,3,4] , time=[4,5,6,8]
+
+         now we calculate the ratio di/mi and arrange them in decreasing order along with their index to know whom to kill first.
+
+
+
+
+
+*/
+
+import java.util.HashMap;
+import java.util.Map;
+import java.util.TreeMap;
+import java.util.*;
+
+public class _02_min_damage_dealt_to_bob {
+    public static void main(String[] args) {
+        int power = 4;
+        int[] damage = {1, 2, 3, 4};
+        int[] health = {4, 5, 6, 8};
+        int n = damage.length;
+
+        // pair: {threatLevel, index}
+        List<double[]> threat = new ArrayList<>();
+
+        // Calculate threat level = time_to_kill / damage
+        for (int i = 0; i < n; i++) {
+            double timeToKill = Math.ceil((double) health[i] / power);
+            threat.add(new double[]{timeToKill / damage[i], i});
+        }
+
+        // Sort by threat level
+        threat.sort(Comparator.comparingDouble(a -> a[0]));
+
+        long totalDamage = 0;
+        long cumulativeDamage = 0;
+        for (int d : damage) cumulativeDamage += d;
+
+        for (int i = 0; i < n; i++) {
+            int idx = (int) threat.get(i)[1];
+            int timeToKill = (int) Math.ceil((double) health[idx] / power);
+
+            totalDamage += cumulativeDamage * timeToKill;
+            cumulativeDamage -= damage[idx];
+        }
+
+        System.out.println(totalDamage);
+
+
+    }
+}

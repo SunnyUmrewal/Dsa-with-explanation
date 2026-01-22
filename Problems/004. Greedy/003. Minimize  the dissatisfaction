@@ -1,0 +1,106 @@
+package com.beginnerdsa.step3._4_Greedy;
+/*
+students are standing in a queue for a lunch,
+suppose ith student is standing at the ith number in the queue from 1 to n.
+each and every student is associated with 2 numbers, i.e= ai and bi
+
+now the dissatisfaction of a student id based on the
+Dissatisfaction of the person i
+ equals the product of ai
+ by the number of people standing to the left of his position, add the product bi
+ by the number of people standing to the right of his position. Formally, the dissatisfaction of the student i
+, which is on the position j
+i.e:
+ai⋅(j−1)+bi⋅(n−j)
+
+where j is the position if that student.
+so we are allowed to rearrange the student position so that we get the
+minimum dissatisfaction.
+
+
+
+so for each student the dissatisfaction is:
+a1 b1 = a1(1-1)+b1(n-1)
+a2 b2 = a2(2-1)+b2(n-2)
+.
+.
+an bn = an(n-1)+bn(n-j)
+
+lets take only 2 students:
+if i keep 1 then 2:
+
+a1 b1 = a1(0)+b1(n-1)
+a2 b2 = a2(1)+b2(n-2)
+
+and if i take 2 then 1 :
+
+a2 b2 = a2(0) + b2(n-1)
+a1 b1 = a1(1) + b1(n-2)
+
+so the main thing is how should we rearrange them,
+ai⋅(j−1)+bi⋅(n−j)
+lets open it:
+ai(j) - ai + bi(n) - bi(j)
+here we have : bi(n)-ai
+which is constant part which is same for all pairs no matter the arrangement of the students, as this does not depends in position of student
+and we have: ai(j)-bi(j)
+which is the variable part which depends on the position of the student,
+
+so (ai-bi)j : we make 2 arrays 1 of: ai-bi and 2nd of j
+where we need to minimize the sum so that total dissatisfaction is minimized.
+so
+ai-bi    j
+
+a1-b1    1
+a2-b2    2
+a3-b3    3
+.
+.
+.
+an-bn    n
+
+so which student is associated to which position is
+when we arrange ai-bi in descending order of their ai-bi
+because j is already in ascending order
+and small*big = not so big
+but big*big= bigger
+
+so arrange ai-bi in their descending order
+
+and multiply with j and add the constant part to get the minimum dissatisfaction.
+
+
+ */
+
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.Scanner;
+
+public class _03_min_the_dissatisfaction {
+    public static void main(String[] args) {
+
+        Scanner sc = new Scanner(System.in);
+        int n = sc.nextInt();
+        long sum = 0;
+        Long[] p = new Long[n];
+
+        for (int i = 0; i < n; i++) {
+            long a = sc.nextLong();
+            long b = sc.nextLong();
+            sum = sum - a + b * n;
+            p[i] = a - b;
+        }
+
+        Arrays.sort(p, Collections.reverseOrder());
+
+        for (int j = 1; j <= n; j++) {
+            sum += j * p[j - 1];
+        }
+
+        System.out.println(sum);
+
+
+
+    }
+}
+

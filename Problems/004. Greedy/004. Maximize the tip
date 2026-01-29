@@ -1,0 +1,130 @@
+package com.beginnerdsa.step3._4_Greedy;
+
+/*
+question:
+there are 2 delivery man A and B,
+in the store they receive N orders, if A gets delivers the order he hers Ai tip and if B gets the order he gets Bi tip,
+we need to maximize the tip.
+one order will be handled by only 1 person.
+the thing is A can work only for X days and B can work only for Y days , so we have to select carefully
+that who should work when so that the total tip is maximized.
+here X+Y would be either greater than N or equal to N.
+
+Input:
+The first line contains three integers N, X, Y.
+The second line contains N integers. The ith integer represents Ai.
+The third line contains N integers. The ith integer represents Bi.
+
+so,
+in the first half if we only need to maximize the tip, then daily we could only select the person who is getting the max tip.
+eg: N=5, and we need to maximize the tip then:
+1,2
+4,2
+100,3
+44,1
+2,5
+
+so we would have selected the : b,a,a,a,b
+but what if A can only work for 1 day then this will not be the answer.
+the answer will be selecting the A for delivery when he is receiving the largest tip i.e on day 3,
+so when X=1 Y=6.
+THEN the answer would be : B,B,A,B,B
+
+so how to know that how many days we need to make them work to get the biggest total tip is to
+simply brute force for every possible case i.e:
+X=2 Y=2:
+so,
+x=0 y=N-1 (only if 0<=X and N-1<=Y)
+x=1 y=N-2 (only if 1<=X and N-2<=Y)
+x=2 y=N-3 (only if 2<=X and N-3<=Y)
+
+now we get all the iterations which could contribute to our answer,
+now how to select the maximum for each day.
+suppose :
+A1,B1
+A2,B2
+A3,B3
+A4,B4
+A5,B5
+suppose A has to work for 0 days then B will have to work for N days:
+so total sum: B1+B2+B3+B4+B5
+
+IF, A would have to work for 1 day then
+total sum= A1+B2+B3+B4+B5
+i.e basically:
+NEWSUM= old_sum+ (A1-B1) OR
+NEWSUM= old_sum+ (A2-B2) OR
+NEWSUM= old_sum+ (A3-B3) OR
+NEWSUM= old_sum+ (A4-B4) OR
+NEWSUM= old_sum+ (A5-B5) OR
+
+NOW which will be used when we need to make A work for 1 day i.e
+we will select the max(NEWSUM)
+
+now what if we will have to make A work for 2 days,
+we will basically select the max 2 days a is getting the biggest tip.
+
+so, we will create an array, where we will store the
+(A1-B1, A2-B2, A3-B3, A4-B4, A5-B5)
+AND WILL sort them and select the A's as per the days from the last.
+and at last will return the days for which A AND B has to work which are giving total max tip.
+
+
+should have thought:
+
+
+
+*/
+
+import java.util.*;
+
+public class _04_maximize_the_tip {
+    public static void main(String[] args) {
+        Scanner sc = new Scanner(System.in);
+
+        int n = sc.nextInt(); // number of orders
+        int X = sc.nextInt(); // max Andy can take
+        int Y = sc.nextInt(); // max Bob can take
+
+        int[] a = new int[n]; // tips if Andy delivers
+        int[] b = new int[n]; // tips if Bob delivers
+        int[] diff = new int[n]; // a[i] - b[i]
+
+        for (int i = 0; i < n; i++) {
+            a[i] = sc.nextInt();
+        }
+        long baseSum = 0;
+        for (int i = 0; i < n; i++) {
+            b[i] = sc.nextInt();
+            baseSum += b[i]; // initial tip sum assuming all handled by Bob
+            diff[i] = a[i] - b[i];
+        }
+
+        Arrays.sort(diff);
+        reverse(diff);
+
+        long[] prefix = new long[n + 1];
+
+        for (int i = 1; i <= n; i++) {
+            prefix[i] = prefix[i - 1] + diff[i-1];
+        }
+        long maxTip = 0;
+        for (int i = 0; i <= n; i++) {
+            if (i <= X && n - i <= Y) {
+                maxTip = Math.max(maxTip, baseSum + prefix[i]);
+            }
+        }
+        System.out.println(maxTip);
+    }
+
+    private static void reverse(int[] arr) {
+        int l = 0, r = arr.length - 1;
+        while (l < r) {
+            int tmp = arr[l];
+            arr[l] = arr[r];
+            arr[r] = tmp;
+            l++;
+            r--;
+        }
+    }
+}

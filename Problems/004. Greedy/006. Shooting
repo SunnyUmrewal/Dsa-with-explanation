@@ -1,0 +1,171 @@
+package com.beginnerdsa.step3._4_Greedy;
+
+import java.util.Scanner;
+/*
+in a shooting game, aarsi and krypto were competing.
+we are given a matrix of 1*M , 1D matrix, and each cell contains of which player took a shot
+A=0 : no one took a shot
+A=1 : aarsi took a shot
+A=2 : krypto took a shot
+A=3 : both took a shot
+
+considering each cell as bullseye 1 by 1, the score of the shot is calculated by
+|sum of all the score by aarsi - sum of all the score by krypto|. for each bullseye.
+you need to print result array
+
+https://www.codechef.com/problems/SHOOT0
+
+ */
+
+//bruteforce:
+/*
+public class _06_shooting {
+    public static void main(String[] args) {
+        Scanner sc = new Scanner(System.in);
+
+        int t = sc.nextInt();
+
+
+        int[] cell = null;
+        int[] score = null;
+
+        for (int i = 0; i < t; i++) {
+            int m = sc.nextInt();
+            cell = new int[m + 1];
+            cell[0] = 0;
+            for (int j = 1; j <= m; j++) {
+                cell[j] = sc.nextInt();
+            }
+            score = new int[m + 1];
+            score[0] = 0;
+
+
+            for (int k = 1; k <= m; k++) {
+                int sum1 = 0, sum2 = 0;
+
+                for (int l = 1; l <= m; l++) {
+                    if (cell[l] == 1 || cell[l] == 3) {
+
+                    }
+                    if (cell[l] == 2 || cell[l] == 3) {
+                        sum2 += Math.abs(k - l);
+                    }
+                }
+                score[k] = Math.abs(sum1 - sum2);
+            }
+            for (int a = 0; a < score.length; a++) {
+                System.out.println(score[a]);
+            }
+
+        }
+    }
+}
+*/
+
+
+//now in brute force we were continuously calculating sum1 += Math.abs(k - l); again and again so can we simplify this and make more optimized, yes!
+/*
+we can make an array A and K, that will store at which index aarsi and krypto has taken a shot with 0 and 1.
+now we have all the index where aarsi and krypto took shots.
+
+now we will do is for each line (line means bullseye), we will calculate
+left sum and right sum for each index of aarsi and krypto separatly.
+
+eg: if array= {1,2,0,2,0,}
+if bullseye is on index 2,
+then total cost for index i is calculated as :
+left cost of aarsi: (count of aarsi on left * line)-(sum of aarsi shot on left)
+right cost of aarsi: (sum of aarsi shot on right)-(count of aarsi on right *line)
+
+total cost of aarsi for index i: left cost + right cost
+
+similarly we will calculate left and right cost for krypto for each index i,
+and then at last we will subtract total cost of aarsi and krypto for each index i.
+
+how we thought we need to split the values on left and right ,
+as in brute force we saw abs(k-l) which means abs implies only 2 conditions: l<=k and l>k
+so spliting is not a trick it's a mathematical manipulation, without spliting we cannot remove abs and without removing abs we cannot optimize this.
+and we were storing the sum so maybe it signals prefix sum being used.
+
+
+
+so to store the count of aarsi on left, sum of aarsi on left, total sum of aarsi we need to define some variables and calculate them.
+same with krypto.
+ */
+
+public class _06_shooting {
+    public static void main(String[] args) {
+        Scanner sc = new Scanner(System.in);
+        int m=5;
+        int[] b= {0,2,1,3,0,1};
+
+        int[] a=new int[m+1];
+        a[0]=0;
+
+        int[] k=new int[m+1];
+        k[0]=0;
+        int sumofkrypto=0;
+        int countofkrypto=0;
+        int totk=0;
+        int kc=0;
+
+        int sumofaarsi=0;
+        int countofaarsi=0;
+        int tota=0;
+        int ac=0;
+
+
+        for(int i=1;i<=m;i++){
+            if(b[i]==1){
+                a[i]=1;
+                tota+=i;
+                ac++;
+            }
+            if(b[i]==2){
+                k[i]=1;
+                totk+=i;
+                kc++;
+            }
+            if(b[i]==3){
+                a[i]=1;
+                k[i]=1;
+                totk+=i;
+                kc++;
+                tota+=i;
+                ac++;
+            }
+        }
+
+        for(int line=1; line<=m; line++){
+            int d=0; //when line has krypto on it so we add it
+            int w=0;
+            if(k[line]==1){
+                d=1;
+                w=line;
+                sumofkrypto+=line;
+                countofkrypto+=1;
+            }
+            int left=(countofkrypto*line)-(sumofkrypto);
+            int right=(totk-sumofkrypto+w)-(line*(kc-countofkrypto+d));
+            k[line]=left+right;
+        }
+
+        for(int line=1; line<=m; line++){
+            int l=0;
+            int q=0;
+            if(a[line]==1){
+                l=1;
+                q=line;
+                sumofaarsi+=line;
+                countofaarsi+=1;
+            }
+            int left=(countofaarsi*line)-(sumofaarsi);
+            int right=(tota-sumofaarsi+q)-(line*(ac-countofaarsi+l));
+            a[line]=left+right;
+        }
+
+        for(int i=1;i<=m;i++){
+            System.out.println(Math.abs(a[i]-k[i]));
+        }
+    }
+}

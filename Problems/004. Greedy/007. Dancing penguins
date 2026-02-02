@@ -1,0 +1,205 @@
+package com.beginnerdsa.step3._4_Greedy;
+/*
+at a party of penguins,
+there are N number of male penguin and N number of female penguin
+each male and female penguin wish to dance with the opposite gender penguin as per there preference
+of their height, some male penguin want female penguin to be shorter than them and some wish there female penguin
+should be taller than them, same with female penguins.
+
+height of penguin is mentioned along with a sign in front of each height, either positive or negative,
+telling that what type of partner do they want, of positive, then they want a penguin partner taller than them
+if negative that means they want a partner shorter than them.
+we need to print the number of maximum compatible couples that can be partners.
+
+
+eg:input:  2 (no. of N)
+          -1800 -2200 ( 2 male)
+           1900  1800 (2 female)
+
+           total max compatible is: 1
+           either (-2200,1900) or (-2200,1800)
+
+
+//bruteforce:
+
+
+ */
+import java.util.Scanner;
+import java.util.HashMap;
+import java.util.Map;
+
+public class _07_dancing_penguins {
+    public static void main(String [] args) {
+        Scanner sc=new Scanner(System.in);
+        int n=sc.nextInt();
+//        int[] male=new int[n];
+//        int[] female=new int[n];
+
+        Map<Integer,Integer> male1=new HashMap<>();
+        Map<Integer,Integer> female1=new HashMap<>();
+
+        int lowerBound=-1;
+        int answer=0;
+
+        for(int i=0;i<n;i++){
+//            male[i]=sc.nextInt();
+            int j=sc.nextInt();
+            male1.put(j,male1.getOrDefault(j,0)+1);
+
+        }
+        for(int i=0;i<n;i++){
+//            female[i]=sc.nextInt();
+            int k=sc.nextInt();
+            female1.put(k,female1.getOrDefault(k,0)+1);
+        }
+        int s= 0;
+        for (Map.Entry<Integer, Integer> male: male1.entrySet()){
+            int k=male.getKey();
+            boolean b=false;
+            for (Map.Entry<Integer, Integer> female : female1.entrySet()){
+                if(k<0){
+                     s=female.getKey();
+                    if (female.getKey()>0 && female.getKey()<Math.abs(k)){
+                        int a=Math.abs(k-female.getKey());
+                        if(lowerBound>a){
+                            lowerBound=a;
+                            b=true;
+                        }
+                    }
+                }
+                if (k>0){
+                    s=female.getKey();
+                    if (female.getKey()<0 && Math.abs(female.getKey())>k){
+                        int a=Math.abs(female.getKey()-k);
+                        if(lowerBound>a){
+                            lowerBound=a;
+                            b=true;
+                        }
+                    }
+
+                }
+            }
+            if (b){
+                answer++;
+                female1.put(s,female1.get(s)-1);
+                male1.put(k,male1.get(k)-1);
+
+            }
+
+        }
+        System.out.println(answer);
+
+    }
+}
+
+
+//optimized
+
+/*
+in this we will make 4 different arrays: 2 for male and 2 for females, 1 male array will include all males that require female height greater than them
+and another array where males requires females of less height than them.
+same with female array
+
+then we will sort the array so that we can iterate them easily using 2 pointer.
+MALES: 5, 10, 15 ,-5 , -10 , -15, -25
+FEMALES: 5 ,10 ,15, -5, -10, -15, -21
+
+We will make 4 arrays respectively and sort them:
+
+P1M:5, 10, 15
+P2M: -5 , -10 , -15, -25
+
+P1F:5 ,10 ,15
+P2F:-5, -10, -15, -21
+
+now all males that are positive requires females that are greater than them so surely they will require those females that want males to be shorter than them.
+so P1M will make pairs with only P2F
+and similarly P2M will make pair with P1F
+
+now,
+we will keep 1 pointer to P2M and another pointer to P1F and will check if they make pair if yes then we shift both pointer 1 step ahead
+if no then we shift male pointer ahead.
+and eventually count the pairs.
+
+same with P1M and P2F but here if pair does not makes then we shift female pointer otherwise we shift both pointers.
+
+
+*/
+
+
+/*
+
+import java.util.*;
+
+public class Main {
+    public static void main(String[] args) {
+        Scanner sc = new Scanner(System.in);
+        long n = sc.nextLong();
+        List<Long> p1m = new ArrayList<>();
+        List<Long> p2m = new ArrayList<>();
+        long c = 0;
+
+        for (long i = 1; i <= n; i++) {
+            long y = sc.nextLong();
+            if (y < 0) {
+                p2m.add(Math.abs(y));
+            } else {
+                p1m.add(y);
+            }
+        }
+
+        List<Long> p1f = new ArrayList<>();
+        List<Long> p2f = new ArrayList<>();
+        for (long i = 1; i <= n; i++) {
+            long y = sc.nextLong();
+            if (y < 0) {
+                p2f.add(Math.abs(y));
+            } else {
+                p1f.add(y);
+            }
+        }
+
+        if (p2m.size() > 0) {
+            Collections.sort(p2m);
+        }
+
+        if (p1m.size() > 0) {
+            Collections.sort(p1m);
+        }
+
+        if (p2f.size() > 0) {
+            Collections.sort(p2f);
+        }
+
+        if (p1f.size() > 0) {
+            Collections.sort(p1f);
+        }
+
+        int j = 0;
+        int i = 0;
+        while (i < p1f.size() && j < p2m.size()) {
+            if (p2m.get(j) > p1f.get(i)) {
+                c++;
+                j++;
+                i++;
+            } else {
+                j++;
+            }
+        }
+
+        j = 0;
+        i = 0;
+        while (i < p1m.size() && j < p2f.size()) {
+            if (p2f.get(j) > p1m.get(i)) {
+                c++;
+                j++;
+                i++;
+            } else {
+                j++;
+            }
+        }
+
+        System.out.println(c);
+    }
+}
+*/

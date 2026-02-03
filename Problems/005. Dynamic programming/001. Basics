@@ -1,0 +1,99 @@
+package com.beginnerdsa.step3._5_recursion;
+
+/*
+RECURSION
+
+1. In recursion, we will always have a branch
+2. we start from the top of the branch
+3. we travel the branch from top to bottom
+4. once we reach the bottom we start going in upper direction similarly one node by one.
+5. whenever we are going down a branch it means we are exploring.
+6. whenever we are going up a branch it means we have collected the answer, and now we are trying to send that answer to the top.
+7. whenever we return a constant value it means the branch has ended, and now we will be going in upper direction.
+
+
+eg:
+imagine a branch of edges and vertices going in top to bottom
+
+1 -> 2 -> 3 -> 4 -> 5
+
+we start from top of the branch and travel till bottom like 1>2>3>4>5
+once we reach bottom then we go in upper direction, but now we will have some data along with us.
+from 5 when we go to 4 we have some answer form 5 and i am sending that answer to node 4
+when i go to 3 it means i have some answer from 4 and 5 and i am sending that answer to node 3
+when i am on 2 it means i have some answer from 3,4,5 and i am sending that answer to 2
+and when i reach 1 it means i have some answer from 2,3,4,5 and i am sending that answer to node 1.
+
+i can manipulate that data i have when going upwards according to question i get.
+
+
+
+so eg:
+we want to calculate sum of first 10 natural numbers:
+
+public class Main {
+    static int sum(int n) {
+        if (n == 0) return 0;
+        return n + sum(n - 1);
+    }
+
+    public static void main(String[] args) {
+        System.out.println(sum(10));
+    }
+}
+
+
+now imagin a branch from 1 to 10
+
+1 --> 2 --> 3 --> 4 --> 5 --> 6 --> 7 --> 8 --> 9 --> 10
+
+when at 1: f(10)= 10 + f(9)
+        2: f(9)= 9 + f(8)
+        3: f(8)= 8 + f(7)
+        4: f(7)= 7 + f(6)
+        5: f(6)= 6 + f(5)
+        6: f(5)= 5 + f(4)
+        7: f(4)= 4 + f(3)
+        8: f(3)= 3 + f(2)
+        9: f(2)= 2 + f(1)
+        10: f(1) = 1 + f(0)
+            f(0) = 0;
+
+whenever we return a constant value it means the branch has ended, and now we are going in upper direction.
+now the process starts of sending answers upwards.
+
+
+now we were at 10
+at 10: we had f(1)= 1+f(0) => 1
+now at 9: we had f(2) = 2 + f(1) = 2+1= 3
+now at 8: we have f(3) = 3+ f(2) = 3+3 = 6
+at 7 : we have f(4) = 4 + f(3) = 4+ 6= 10
+at 6 : we have f(5) = 5 + f(4) = 5+ 10 = 15
+at 5 : we have f(6) = 6 + f(5) = 6 + 15 = 21
+at 4 : we have f(7) = 7 + f(6) = 7 + 21= 28
+at 3 : we have f(8) = 8 + f(7) = 8 + 28 = 36
+at 2 : we have f(9) = 9 + f(8) = 9 + 36 = 45
+at 1 : we have f(10)= 10 + f(9) = 10 + 45 = 55
+
+
+
+space used by recursion:
+As recursion is using some stack space.
+We created some nodes and each node stores some answer but space is different at different nodes
+
+space complexity : length of the longest branch.
+
+if we have multiple branch then the length of longest branch will be the space complexity.
+
+
+time complexity:
+
+
+
+*/
+
+public class _01_Basics {
+    public static void main(String[] args) {
+
+    }
+}

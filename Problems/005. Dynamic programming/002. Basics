@@ -1,0 +1,89 @@
+package com.beginnerdsa.step3._5_recursion;
+/*
+DYNAMIC PROGRAMMING
+
+To find a solution to a problem, we divide the problem into sub problems, find
+answers to those sub problems, combine them to get the original answer.
+
+eg:
+To calculate 1+2+3+4+5
+we break it into sub problems: (1+2) + (3+4) + (5)
+find the answer to those subproblems: 3 + 7 + 5
+combine those answers to get the original answer: 15
+
+//THIS IS THE BASE, REMEMBER THIS : divide the problem, solve the sub problem, combine it to get the final answer
+
+trick:
+-> dp[i] usually means the best answer to the problem till the ith index of the array.
+-> obviously, final answer will be dp[n] (where n is the size of the array)
+-> we cannot directly calculate dp[n], we first need to calculate dp[1], dp[2], ....
+   and combine their results to find the value of dp[n].
+
+
+
+
+problem:
+we are given an array of integers, and some queries in the format:(1,i) we need to find the sum from 1 to i for each query.
+
+so running a loop for each query [O(N)] and finding sum is a good idea but not very efficient as it takes [O(N*Q)] time.
+
+so lets create a dp array of size n:
+where, dp[1]= sum of all numbers from (1,1)
+       dp[2]= sum of all numbers from (1,2)
+       dp[3]= sum of all numbers from (1,3)
+       and so on.
+
+say a[5]={4,5,3,2,1} (1 based indexing)
+
+so, dp[1]=4
+    dp[2]=4+5 = 9
+    dp[3]=4+5+3=12
+    and so on.
+
+    so for index i: dp[i]=a[i]+dp[i-1]
+
+    eg: dp[3] = a[3] + dp[3-1] = a[3] + dp[2] = 3 + 9 = 12
+
+
+    dp[i]= a[i] + dp[i-1]
+
+public class Main {
+    public static void main(String[] args) {
+
+        int n = 5; // size of the array
+        int[] a = {6, 7, 3, 2, 2};
+
+        int[] dp = new int[n + 1]; // dp array
+
+        int i = 0;
+        while (i <= n - 1) {
+            if (i == 0)
+            {
+                dp[i] = a[i];
+            }
+            else {
+                dp[i] = a[i] + dp[i - 1];
+            }
+            i++;
+        }
+
+        int q = 4; // number of queries
+        int[] w = {0, 3, 4, 2}; // query array
+
+        i = 0;
+        while (i <= q - 1) {
+            int query = w[i];
+            System.out.println(dp[query]); // O(1) query
+            i++;
+        }
+    }
+}
+
+time takes: O(N+Q)
+
+
+
+
+*/
+public class _02_Basics {
+}

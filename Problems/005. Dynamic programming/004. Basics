@@ -1,0 +1,45 @@
+package com.beginnerdsa.step3._5_recursion;
+/*
+
+question: it is the upgraded version of the previous question,
+here we are given with 2 arrays, a1 and a2,
+we need to select some elements from both the arrays (select subset of elements)
+so that the sum of subset is maximum.
+
+if say we selected 5th element from 1 array then we cannot select 5th element of another array as well as
+we cannot select immediate previous element of both the array i.e 4th element of both the array.
+
+so by observation we can do for first 2 elements and for 3rd element,
+we if we selected 3rd element then we cannot select other array 3rd element and previous element from both array
+so our answer will be a[3]+dp[i-2]
+if i didnot select 3rd element then answer for dp[3] = dp[2]
+
+for 4th element if i select 4th element then
+dp[4]= max from both 4th element of both array + dp[2]
+
+and if i did not select 4th element then
+dp[4]= dp[3]
+
+ */
+public class _04_Basics {
+    public static void main(String[] args) {
+
+        int[] a1={0,1,5,3,21234};
+        int[] a2={0,-4509,200,3,40};
+
+        int[] dp=new int[a1.length];
+
+
+        dp[1]=Math.max(Math.max(a1[1],a2[1]),0);
+        if(a1.length-1>=2){
+            dp[2]=Math.max((Math.max(a1[2],a2[2])),dp[1]);
+        }
+        int i=3;
+        while(i<a1.length){
+            dp[i]=Math.max(Math.max(a1[i],a2[i])+dp[i-2],dp[i-1]);
+
+            i++;
+        }
+        System.out.println(dp[a1.length-1]);
+    }
+}

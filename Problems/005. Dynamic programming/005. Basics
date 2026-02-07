@@ -1,0 +1,74 @@
+package com.beginnerdsa.step3._5_recursion;
+
+/*
+now we are given with a number X, we have to find minimum number of steps to convert that number to 1.
+at each step we can either decrease the number by 1.
+or we can either decrease the number by 2.
+or we can divide the number by 7 if possible.
+
+so,say we have x, so we will make a dp array where we will store min operation for each number till x
+and at last we will print dp[x] so get the final answer
+so,
+say we have x=1: so min step is 0.
+if x=2: we will decrease by 1: min step=1
+if x=3: we have 2 choices: either s1: 3 -> 2 ->1
+                           or     s2: 3 -> 1
+        so min(s1,s2) => s2 = 1
+
+if x=4: so we have 3 choices: s1: 4->3->2->1
+                              s2: 4->3->1
+                              s3: 4->2->1
+
+        so min is s2 or s3 : 2
+
+lets do for 5:
+dp[5]= we can either decrease 5->3 or 5->4
+and what after it? we know best answer to go from 3 to 1 and we also know best answer to
+go from 4 to 1 i.e dp[3] and dp[4]
+
+so dp[5]= min(dp[4]+1 , dp[3]+1) , we did +1 becuase we need to convert 5 to either 3 or 4 sp thats 1 step.
+
+
+lets do it for x=14:
+we can do is we can divide the number by 7,
+14/7=2, and then we know best answer from going 2 to 1, i.e dp[2]
+
+so min answer for dp[14]=dp[14/7]+1
+
+
+
+ */
+public class _05_Basics {
+    static int mini(int a, int b, int c) {
+        return Math.min(a, Math.min(b, c));
+    }
+
+    static int solve(int x) {
+
+        int[] dp = new int[x + 1];
+
+        dp[1] = 0;
+        if (x >= 2) dp[2] = 1;
+
+        int i = 3;
+        while (i <= x) {
+            if (i % 7 == 0) {
+                dp[i] = mini(dp[i - 1] + 1, dp[i - 2] + 1, dp[i / 7] + 1);
+            } else {
+                dp[i] = Math.min(dp[i - 1] + 1, dp[i - 2] + 1);
+            }
+            i++;
+        }
+        return dp[x];
+    }
+
+    public static void main(String[] args) {
+
+        int x = 93;
+        System.out.println(
+                "Minimum number of steps required to make the given number to 1 " + solve(x)
+        );
+    }
+}
+
+

@@ -1,0 +1,73 @@
+package com.beginnerdsa.step3._5_recursion;
+/*
+
+here we are given with a string and a integer k,
+we need the difference between the characters to be not more than k,
+and we need to find the maximum substring that holds this condition,
+if we have more than 1 longest substring then print the substring that appears first.
+
+eg: word="ababbacaabbbb" k=2
+
+so we have 2 substrings that are valid i.e:  ababba and aabbbb
+
+string to appear first is : ababba
+so answer is ababba
+
+
+DP is used when the current answer depends on previous answers.
+Greedy is used when the current choice does NOT depend on stored past results.
+
+
+When it becomes greedy
+
+If both are true:
+You don’t need to store multiple past states
+A local decision is always globally optimal
+→ then it’s greedy
+
+
+so here suppose if we are at index i, so a[i-1] and a[i] should be valid
+inorder to be counted in substring.
+
+eg:a="ababbacaabbbb"
+k=2
+we  can write directly for first few char, like
+dp[1]= 1
+dp[2]=2
+dp[3]= ba is valid so total would be 1+a[i-1]
+that how it will work
+
+
+
+
+
+ */
+public class _08_valid_substring {
+    public static void main(String[] args) {
+        String s="zebraa";
+        char[] arr=s.toCharArray();
+        int k=1;
+        int[] dp=new int[s.length()];
+
+        dp[0]=1;
+
+        int maxLen=1;
+        int maxIndex=0;
+
+        for(int i=1;i<dp.length;i++){
+            if(Math.abs(arr[i]-arr[i-1])<=2){
+                dp[i]=1+dp[i-1];
+            }
+            else{
+                dp[i]=1;
+            }
+            if (dp[i] > maxLen) {
+                maxLen = dp[i];
+                maxIndex = i;
+            }
+        }
+        int startIndex = maxIndex - maxLen + 1;
+        System.out.println(s.substring(startIndex, startIndex + maxLen));
+    }
+}
+

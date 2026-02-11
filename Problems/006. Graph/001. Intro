@@ -1,0 +1,165 @@
+package com.beginnerdsa.step3._6_Graph;
+
+/*
+graph : it is a data structure which consists of nodes and edges
+
+egde: bond connecting and 2 nodes.
+
+undirected edge: edge without direction is an undirected edge.
+directed edge: if edge is having direction then it is called a directed edge.
+
+undirected graph: graph with undirected edge is called an undirected graph.
+
+directed graph: graph with directed edges is called a directed graph.
+
+2 directed edges create a undirected edge.
+
+x---y (undirected) = x--->y (directed) + y--->x (directed)
+N=no. of nodes in graph.
+M=no. of edges in graph.
+
+we can represent a graph using a matrix representation.
+
+
+*/
+//ques: take input of graph and tell for each node "i" how many nodes are directly connected to it.
+
+/*
+here we will create a 2d matrix .
+eg: we are given a  graph:
+1---2----3
+
+so we will create a 3 by 3 matrix
+and will write "1" in the matrix where we see a connection
+like here, we see there is a connection b/w 1,2
+so we put 1 in (1,2) and (2,1) on the matrix
+why 2 times we are putting 1, bcz it's an undirected graph
+so connection is 2 sided.
+
+similarly for other connections.
+finally we will get
+
+   1   2   3
+1      1
+2  1       1
+3      1
+
+and if we want to know for a particular node that how many
+nodes are directly connected to it then
+we will do is for that node we will run 2 loops.
+
+if we want to know how many nodes are directly connected to 2,
+then for i=2, we run j=1to3 (column)
+
+and count the number of 1 and that many nodes are directly connected to node 2.
+
+
+
+
+ */
+/*
+import java.util.Scanner;
+
+public class _01_Intro {
+    public static void main(String[] args) {
+        Scanner sc = new Scanner(System.in);
+
+        int n = sc.nextInt(); //nodes
+        int m = sc.nextInt(); //edges
+
+        int[][] b = new int[n + 1][n + 1];
+
+        for (int i = 1; i <= m; i++) //for each edge
+        {
+            int x, y;
+            x = sc.nextInt();//1st node
+            y = sc.nextInt();//2nd node
+            b[x][y] = 1;
+            b[y][x] = 1;
+        }
+        int c = 0;
+
+        int l = sc.nextInt(); //enter node number to know no. of connecting nodes
+        for (int j = 1; j <= n; j++) {
+            if (b[l][j] == 1) {
+                c++;
+            }
+        }
+
+        System.out.println(c);
+    }
+}*/
+
+//space comp.: O(n*n)
+
+/*
+
+better representation: adjacency list
+
+It uses an array where the index/ key represents a vertex
+and the associated value is a list (like linked list or array)
+containing all vertices connected to it by an edge.
+
+eg:
+
+      2---0---1
+      |   |
+  4---3   5
+
+
+now we will make an array:
+first line represents node, second column represents another array connected to each node
+which represents directly connected nodes to the node.
+0--->1,2,5
+1--->0
+2--->3,0
+3--->2,4
+4--->3
+5--->0
+
+
+let the 1st column array be "g"
+then g[0] will give directly connected nodes to 0.
+
+this saves space as in matrix most space is empty.
+if we have a dense graph then matrix is useful
+otherwise adjacency list is good.
+
+
+
+
+
+*/
+
+import java.util.*;
+
+public class _01_Intro {
+    public static void main(String[] args) {
+        Scanner sc = new Scanner(System.in);
+        int n=sc.nextInt();  //node
+        ArrayList<Integer>[] g= new ArrayList[n];
+        int m = sc.nextInt(); //edge
+
+        for(int i=0;i<n;i++){
+            g[i]=new ArrayList<>();
+        }
+
+        for(int i=1;i<=m;i++){
+            //take input for undirected graph
+            int x=sc.nextInt();
+            int y=sc.nextInt();
+            g[x].add(y);
+            g[y].add(x);
+
+        }
+
+        for(int i=0;i<n;i++){
+            int c=g[i].size();
+            System.out.println(i+" "+c);
+        }
+    }
+}
+
+//space comp:o(n+2*m)  --> o(n+m)
+
+

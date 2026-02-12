@@ -1,0 +1,119 @@
+package com.beginnerdsa.step3._6_Graph;
+
+
+/*
+BFS: breadth first search
+in a graph the node from which we start traversing out bfs algo we call it source node.
+
+            1           level 0
+         / | | \
+         5 3 4 2        level 1
+           \ / |
+            6  10       level 2
+            |
+            9           level 3
+
+
+
+we will start traversing from node 1, level wise from left to right
+
+we will use queue data structure
+
+       -----------------
+  <-output         <--input
+       ------------------
+
+first we try to put source node into queue:
+q: 1
+then after it we remove that node 1, and then add nodes that are directly
+connected to 1 and has never been visited earlier that's it
+q: 5 3 4 2
+now we remove element 1 by 1.
+then we remove 5 from queue and add nodes that are directly to 5 and has never been visited.
+q: 3 4 2
+then we remove 3...
+q: 4 2 6
+q: 2 6
+q: 6 10
+q: 10 9
+q: 9
+q:
+
+
+
+
+ */
+
+
+//to do BFS + find level of each node + find shortest distance of all nodes from node number 1.
+
+import java.util.*;
+
+public class _02_traverse_graph_BFS {
+    public static void main(String[] args) {
+        Scanner sc = new Scanner(System.in);
+
+        int nodes = sc.nextInt();
+        int edges = sc.nextInt();
+
+        ArrayList<Integer>[] arr = new ArrayList[nodes+1];
+
+        for (int i = 1; i <= nodes; i++) {
+            arr[i] = new ArrayList<>();
+        }
+
+        for (int i = 1; i <= edges; i++) {
+
+            //Reading input for undirected graph.
+            int x = sc.nextInt();
+            int y = sc.nextInt();
+            arr[x].add(y);
+            arr[y].add(x);
+        }
+        bfs(arr, nodes, 1);
+    }
+
+    static void bfs(ArrayList<Integer>[] arr, int nodes, int src) {
+        Queue<Integer> q = new LinkedList<>();
+
+
+        int[] level=new int[nodes+1];   //to take the count of levels we create another array where l[i]=level of ith node
+
+        boolean[] visited = new boolean[nodes + 1];
+
+        q.add(src);
+        visited[src] = true;
+        level[src]=0;                     //knowing level will give the shortest distance from root node to that node.
+
+        while (!q.isEmpty()) {
+            int node = q.poll();
+            System.out.println(node + " ");
+
+            for (int nei : arr[node]) {
+                if (!visited[nei]) {
+                    visited[nei] = true;
+                    level[nei]=level[node]+1;
+                    q.add(nei);
+                }
+            }
+        }
+
+    }
+
+}
+/*
+
+because in bfs we travel things in level wise form so each node which we visit
+for the first time is always at the shortest distance from the source node=1;
+so level array gives us the answer of distance of each node 1 automatically.
+
+another question that can be made is: to print n answers (n=nodes) where for ith
+line should be yes if we can visit the ith node from node 1 else no.
+--> this can be done using the visited array, we run the bfs algo and the node which is not visited is 0/false and we can
+print accordingly.
+
+
+
+IMPORTANT: level is nothing but the shortest path from root to i
+
+ */

@@ -1,0 +1,198 @@
+package com.beginnerdsa.step3._6_Graph;
+
+
+
+
+
+/*
+note: v. imp:
+when we are checking if(used==0)
+it means whatever the shortest path is going on from node 1 to node v
+now it is guaranteed that from v to u this will be the shortest path
+because bfs can go to a new node only when that new node guarantees the shortest path.
+
+bfs me aagar hum new node pe traverse kr rhe hai that means the distance from
+1 to that node is the shortest path because this is the bfs thing.
+
+
+*/
+
+/*
+we are given N nodes, m edges, undirected and unweighted graph.
+for each node 'i', find the number of shortest paths from node 1 to node i.
+
+
+       1
+       |
+       2
+      / \
+     3  4
+     \ /
+      5
+
+let's create an array namely ways, ways[i] will tell us the number of paths to reach ith node.
+
+so ways[1]=1
+   ways[2]=1
+   ways[3]=1
+   ways[4]=1
+   ways[5]=2
+
+   we can observe this.
+
+eg: all nodes are connecting to y, and they are coming from anywhere behind, i have not drawn the full graph behind the nodes.
+
+-1----\
+-2----\
+-3-----y
+-4----/
+-5----/
+
+so ways[y]= ways to reach 1+2+3+4+5.
+
+now in bfs algorithm, suppose we are at a parent of u i.e v
+
+    v
+    |
+    u
+in bfs we used to print v, pop v and add u.
+now, suppose we already know the ways[v], i.e ways to reach v.
+
+so ways[u]=ways[v] simple.
+
+as we know in bfs when we check for condition
+if(visited==false){} that means we are coming to that node for the first time from the root node
+so that is the shortest path from root to ith node.
+
+we can do is : if(visited==0){
+                        q.push();
+                        visited[u]=1;
+                        ways[u]=ways[v];
+
+                }
+
+but what if we have already visited that node earlier then what to do:
+we will think that if its already been visited then definatily it could or could not be the shortest path from new v to node.
+like:
+       1
+       |
+       2
+      / \
+     3  4
+     \ /
+      5
+
+   when traverse for 3, we will visit 5 so visited for 5 will be true afterward. and
+   when traversing for 4 afterward then again we will come back to 5 but its already visited
+   so how to find if 4->5 is also shortest or not.
+
+so if the level[new v]+1=level[u]
+then it will also be the shortest path else its not the shortest path.
+
+and if level[new v]+1=level[u] then its not the shortest path so we do nothing.
+
+so finally :
+
+
+if(visited[u]==0){
+//it means that there is a guarantee that this node is being visited for the first time and it is on the shortest path hence ways[u] = ways[v]
+q,pus(u)
+Visited[u] = 1
+Ways[u] = ways[v]
+
+}
+
+Else {
+
+if(lvl(v)+1==lvl(u)){
+// either the node u is on the shortest path from node v
+// then u may add the number of shortest paths of ways[v]
+Ways[u] = ways[u] + ways[v]
+}
+Else {
+// or the node u is not on the shortest path from nodes
+//Do nothing don't add anything as this path from v—> u doesn't lis on the shortest path so counting this way is wrong okjiii
+
+}
+
+IMPORTANT: level is nothing but the shortest path from root to i
+
+
+
+*/
+
+import java.util.LinkedList;
+import java.util.Scanner;
+import java.util.ArrayList;
+import java.util.Queue;
+
+
+public class _03_Shortest_path_from_root_to_node_i {
+    public static void main(String[] args) {
+    Scanner sc=new Scanner(System.in);
+
+    int nodes= sc.nextInt();
+    int edges= sc.nextInt();
+
+    ArrayList<Integer>[] arr=new ArrayList[nodes+1];
+
+    for(int i=1;i<=nodes;i++){
+        arr[i]=new ArrayList<>();
+    }
+
+    for(int i=1;i<=edges;i++){
+        int x=sc.nextInt();
+        int y=sc.nextInt();
+
+        arr[x].add(y);
+        arr[y].add(x);
+
+
+    }
+
+    bfs(arr,nodes,1);
+    }
+    static void bfs(ArrayList<Integer>[] arr, int nodes, int src){
+        Queue<Integer> q=new LinkedList<>();
+
+        int[] level=new int[nodes+1];
+
+        int[] visited=new int[nodes+1];
+
+        int[] ways=new int[nodes+1];
+
+        ways[src]=1;
+        q.add(src);
+        visited[src]=1;
+        level[src]=0;
+
+
+        while(!q.isEmpty()){
+            int v=q.poll();
+
+            for(int u:arr[v]){
+                if(visited[u]==0){
+                    q.add(u);
+                    level[u]=level[v]+1;
+                    visited[u]=1;
+                    ways[u]+=ways[v];
+
+                }
+                else{
+                    if(level[v]+1==level[u]){
+                        ways[u]+=ways[v];
+
+                    }
+                }
+
+            }
+        }
+    }
+
+}
+
+
+
+
+
+

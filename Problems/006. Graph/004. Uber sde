@@ -1,0 +1,119 @@
+package com.beginnerdsa.step3._6_Graph;
+
+
+import java.util.ArrayList;
+import java.util.LinkedList;
+import java.util.Queue;
+import java.util.Scanner;
+
+
+/*
+given a graph with n nodes, m edges; undirected unweighted; each node value is either 0 or 5.
+source node is 1.
+your task is to find for each node 'i', the shortest path length from node 1 + maximum number of 5 possible in the path.
+
+
+
+level is nothing but the shortest path from root to i
+
+               2(5)--3(5)--
+   eg:       /              \
+            1               5(0)
+             \              /
+               4(0)--6(5)--
+
+
+
+       now there are 2 shortest path from 1 to 5, but we need that shortest path that has maximum number of 5.
+
+       so we will first find the shortest path till node i and then will manage an array which hold count of 5 till that i.
+       suppose b[i] tells that if ith node has 5 or not.
+       five_count[u] tells number of 5 till node u from 1 via shortest path.
+
+
+
+       eg:  suppose we go from 1 to v: and we know the count of 5 from 1 to v and 1 to v is shortest path and
+       we go to u from v, and u has not been visited earlier so definitely it will also be the shortest path
+       so count of 5 will be count_of_5 till v + 1 (if that u value is also 5 other wise +0)
+
+       and what if we have already visited the u and now we need to check if that new path we are on is
+       also the shortest or not and then checking the number of 5 for that also.
+
+       so if(shortest_path[v]+1==shortest_path[u])
+       that means we have found another shortest path
+       earlier we already knew shortest path from 1-->u
+       now 1 more shortest path is there i.e : 1-->v-->u
+
+       so we will check which shortest path from them has max count of 5.
+
+       five_count=max(5_count(u) , 5_count(v)+1)
+
+*/
+import java.util.*;
+
+public class _04_Uber_sde {
+    public static void main(String[] args) {
+
+        Scanner sc = new Scanner(System.in);
+
+        int n = sc.nextInt();
+        int m = sc.nextInt();
+
+        int[] val = new int[n + 1];
+        for (int i = 1; i <= n; i++) {
+            val[i] = sc.nextInt();
+        }
+
+        ArrayList<Integer>[] G = new ArrayList[n + 1];
+        for (int i = 1; i <= n; i++) {
+            G[i] = new ArrayList<>();
+        }
+
+        for (int i = 1; i <= m; i++) {
+            int u = sc.nextInt();
+            int v = sc.nextInt();
+            G[u].add(v);
+            G[v].add(u);
+        }
+
+        int[] dist = new int[n + 1];
+        int[] fives = new int[n + 1];
+        int[] used = new int[n + 1];
+
+        Queue<Integer> q = new LinkedList<>();
+
+        q.add(1);
+        used[1] = 1;
+        dist[1] = 0;
+        fives[1] = (val[1] == 5 ? 1 : 0);
+
+        while (!q.isEmpty()) {
+            int v = q.poll();
+
+            for (int u : G[v]) {
+
+                if (used[u] == 0) {
+                    used[u] = 1;
+                    dist[u] = dist[v] + 1;
+                    fives[u] = fives[v] + (val[u] == 5 ? 1 : 0);
+                    q.add(u);
+                } else {
+                    if (dist[u] == dist[v] + 1) {
+                        int temp = fives[v] + (val[u] == 5 ? 1 : 0);
+                        if (temp > fives[u]) {
+                            fives[u] = temp;
+                        }
+                    }
+                }
+            }
+        }
+
+        for (int i = 1; i <= n; i++) {
+            if (used[i] == 0) {
+                System.out.println("-1 -1");
+            } else {
+                System.out.println(dist[i] + " " + fives[i]);
+            }
+        }
+    }
+}

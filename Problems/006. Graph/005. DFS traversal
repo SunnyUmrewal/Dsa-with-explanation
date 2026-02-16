@@ -1,0 +1,109 @@
+package com.beginnerdsa.step3._6_Graph;
+/*
+for depth first search:
+
+eg:
+        1
+       / \
+      2   3
+     /\   /\
+    4  5 6  7
+   /
+  8
+
+dfs: 1,2,4,8,5,3,6,7
+
+basically we go to each boundary from the root node and exhaust the searching there,
+comeback and do the same process with other branched till they are done.
+
+general dfs algo:
+-you take the source node (1): we print it.
+-then we check and exhaust all the branches connected to source node and do the dfs there as well
+(assuming the top node of this branch is source node and do the same thing).
+-as we are repeating the same process again and again its using recursion.
+-recursion uses secret stack space memory.
+
+
+*/
+
+import java.util.Scanner;
+import java.util.ArrayList;
+
+public class _05_DFS {
+    public static void main(String[] args) {
+        Scanner sc = new Scanner(System.in);
+        int nodes = sc.nextInt();
+        int edges = sc.nextInt();
+
+        ArrayList<Integer>[] arr = new ArrayList[nodes + 1];
+
+        for (int i = 1; i <= nodes; i++) {
+            arr[i] = new ArrayList<>();
+        }
+
+        for (int i = 1; i <= edges; i++) {
+            int x = sc.nextInt();
+            int y = sc.nextInt();
+
+            arr[x].add(y);
+            arr[y].add(x);
+
+        }
+        int[] visited=new int[nodes+1];   //we need visited array as we will not printing the already visited nodes again.
+        int[] parent=new int[nodes+1];    //we need to track the parent of each node as we need that in recursion.
+
+
+        dfs(1,arr,visited,parent);          //we will give starting node, arr to traverse, visited array, parent array
+
+    }
+    static void dfs(int src, ArrayList<Integer>[] arr, int[] visited, int[] parent){
+        System.out.println(src);
+        visited[src]=1;
+
+        for(int u:arr[src]){
+            if(visited[u]==0){
+                parent[u]=src;
+                dfs(u,arr,visited,parent);
+            }
+
+        }
+    }
+
+}
+
+//time complexity: o(nodes+edges)
+//space complexity: max depth of graph from source ndoe( thats how large stack can become)
+
+
+/*
+note:
+
+which used less memory the BFS or DFS and why?
+
+eg:                  1
+                 /        \
+                2           3
+               / \       /    \
+              4   5     6     7
+             /\   /\    /\    /\
+             8 9 10 11 12 13 14 15
+
+in bfs: at some stage, all nodes from 8-15 will be in memory
+
+and in dfs: we will never have more than 4 nodes in memory (equal to height of the tree)
+
+
+the difference gets a lot worse as tree gets larger,
+
+more specifically, BFS uses o(max width) memory
+where a DFS uses, o(max depth) memory.
+
+if maxwidth<maxdepth, bfs should use less memory (assuming we use similar representation for both), but this is rarely true.
+
+
+
+
+
+
+ */
+

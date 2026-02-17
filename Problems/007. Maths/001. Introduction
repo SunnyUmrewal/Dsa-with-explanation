@@ -1,0 +1,37 @@
+package com.beginnerdsa.step3._7_Maths;
+
+/*
+
+modulo: x%y : it gives the remainder after dividing x/y
+
+divisibility: if x%y==0 it means x is completely divisible by y
+
+range: if we do x%y it means answer will be in the range [x....(y-1)]
+
+remember:
+if x<y then x%y=x
+infinity: x%y == [0...(y-1)] => %y = [0...(y-1)] => %y =[0...(y-1)]
+
+formulas: (a+b)%k = (a%k + b%k) %k
+
+          (a*b)%k = (a%k * b%k) %k
+
+          (a-b)%k = (a%k - b%k +k) %k
+
+
+
+ (x%k)%k == (x% 2k)%k == (x% 3k)%k ==....
+
+
+
+
+
+
+
+*/
+
+public class _01_maths_intro {
+    public static void main(String[] args) {
+
+    }
+}

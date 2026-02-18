@@ -1,0 +1,186 @@
+package com.beginnerdsa.step3._7_Maths;
+/*
+
+nCr =  n
+    -------
+    n!(n-r)!
+
+nCr : given n distinct things, number of ways to select r things from them
+      not consider the internal order of the r things selected.
+
+
+eg: 4c3 : [1,2,3,4]
+so in how many ways we can select 3 numbers from 4, if 4c3: 4!/3! 1! ==> 4
+so there are a total of 4 ways it which we can select 3 items from the given 4
+
+
+i.e: 1,2,3
+     1,3,4
+     2,3,4
+     1,2,4
+
+here if we have selected 1,3,4 then we are not thinking that 4,3,1 or 1,4,3 will also be a selection
+so in ncr if we have did 1,3,4 that means we are done with all possible variations of it.
+
+INTERNAL ORDERING DOES NOT MATTER IN nCr.
+
+
+
+
+now if we want to count or select with numbers where internal ordering matters,
+then the formula becomes:
+
+nCr * r!
+
+so for the same question if we want to select 3 numbers from the given 4 then
+how many ways are there to select then and the internal ordering matters.
+
+eg: [1,2,3,4]
+as without ordering we were able to select total or 4 ways i.e:
+     1,2,3
+     1,3,4
+     2,3,4
+     1,2,4
+
+with each way we can arrange then in 6 different ways i.e 3!
+so the new formula becomes:
+4c3 * 3!
+i.e: 24
+
+
+ncr * r! : it is nothing but permutation of r things selected from n things.
+
+
+
+
+question: find the number of arrays of size "n" where each number can be from range 1 to m.
+
+eg: if n=2 m=3
+
+that means in an array we can place 2 numbers that too from 1,2,3
+
+so how many ways we can put number in an array.
+11
+12
+13
+21
+22
+23
+31
+32
+33
+
+total 9 arrays we can make where we can store number from 1 to 3 with array of size 2.
+i.e : 3^2 = m^n
+
+
+
+
+ques: find the number of array of size n where each number can be from 1 to m and is strictly increasing.
+eg: n=5, m=15
+
+we are not considering the permutation.
+so we are choosing 5 distinct numbers from 1 to 15.
+and they automatically form exactly 1 strictly increasing array when sorted.
+
+how does 15c5 guarantees strictly increasing?
+here 15c5 means choose any distict number from 1 to 15
+and order does not matter, the selected number are just in a set not an array yet.
+
+and there is exactly 1 way to make the selected 5 number to be strictly increasing.
+no matter in any way we arrange them.
+
+to be strictly increasing: here we cannot repeat number, cannot change order, once chosen order is fixed
+
+we do not take permutation as selecting any 5 number can have total of 5! arrangement and only 1 of them is strictly increasing.
+
+When we do 15C5, we are:
+Choosing 5 distinct numbers
+NOT arranging them
+NOT counting permutations
+A combination doesn’t store order
+But whenever we need a strictly increasing array,
+there is exactly one valid ordering for those chosen numbers.
+
+but in combination we may or may not have selected the right array?
+but we always do: a combination is just a set, a set automatically corresponds to its sorted order
+and that sorted order is always strictly increasing.
+
+so we are not hoping its increasing, its guaranteed.
+
+so 15c5 is our answer.
+
+
+
+
+
+
+topic: STAR AND BAR
+
+given k boxes; find the number of ways to put n balls in them. all n balls are same.
+
+eg: given 2 boxes; find the number of ways to put 5 balls in it.
+
+i.e: 5,0
+     4,1
+     3,2
+     2,3
+     1,4
+     0,5
+
+total 6 ways; formula is
+(n+k-1) C (k-1) => (5+1) C (1) = 6c1 = 6
+
+this means for k boxes and n balls:
+
+k1+k2 == n where k1>=0 k2>=0
+
+now how this formula came:
+eg: box 3, ball 5
+
+so imagine we have 7 spaces: _ _ _ _ _ _ _
+we put 2 stick on any of the 2 space
+
+_ | _ _ | _ _
+and we put balls in the empty spaces
+now those sticks represents 3 boxes separation (look carefully)
+
+the 1st box contain 1 ball, 2 box: 2 ball and 3rd box : 2 balls
+so we need not arrange the ball we need to find the arrangement of those
+2 sticks.
+
+so: total answer for this ques is: 7c2 ; we have 5 balls and 3 boxes so we need 7 spaces so arrange it.
+i.e; (n+k-1) C (k-1)
+
+
+ques: given two linear sequence of size N and M, find the number of ways to generate
+a sequence of N+M size; such that order of both the sequence remains the same.
+
+eg: n: 1,2
+    m: 3,4
+
+    new array: 1,2,3,4
+               1,3,2,4
+            these are valid because after 1-->2 is coming and after 3-->4 is coming.
+
+            but 1,4,2,3 this is not valid because; 1 and 2 are in right sequence but 4-->3 are not in right requence
+
+so: eg: n=3, m=5 is given
+
+total arr: _ _ _ _ _ _ _ _
+so suppose we arrange m and in how many ways we can arrange m; 8c5
+and the rest we need not to find because the leftover space are for n.
+
+so answer is: (n+m) C (m)
+
+
+
+
+*/
+
+
+public class _02_ncr {
+    public static void main(String[] args) {
+
+    }
+}

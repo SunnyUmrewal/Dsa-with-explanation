@@ -1,0 +1,224 @@
+package com.beginnerdsa.step3._7_Maths;
+
+/*
+
+what are factor of a number:
+numbers which can divide a number fully are factors of a number
+eg:
+to find factor of n, we run a loop from 1 to n
+and check if n%i==0, then count++.
+this is brute force--> O(N)
+
+for optimized:
+for number n, we check the factor from 1 to root(n)
+this will give all the factor from 1 to n.
+
+eg: for n=100;
+root(100)=10
+
+so we check from 1 to 10 and this will give us factors from 1 to 100.
+eg: 1 2 3 4 5 6 7 8 9 10
+
+1-->100, 2-->50, 4-->25, 5-->20, 10-->10
+so each number from 1 to 10 has attached to a number >= 10
+which are nothing but the factors of 100 after 10.
+we need not calculate for leftover numbers;
+
+why root(n) and not anything else; because root(n) and root(n) == n
+
+so,
+for n;
+run a loop from 1 to root(n)
+if(n%i==0){
+    if(n/i==i)   eg: 100/10=10
+    { add(i);}        //we add 10 only once. as i is same as n/i so no need to add that twice.
+    else{
+        add(i);   //as they are now different so we need to add them.
+        add(n/i);
+    }
+}
+
+
+------------------------------------------------------
+
+each number can be represented as:
+
+y= p1^y1 . p2^y2 . p3^y3 .......
+
+where p1,p2,p3,... are prime number
+means every number can be represented as product of prime power.
+it is the most basic and fundamental representation. -> it breaks number into as many parts as possible
+
+prime number: 2,3,5,7,11,13,.....
+
+eg:
+10--> 2^1 . 5^1 ==> 10
+12--> 2^2 . 3^1 ==> 12
+
+we cannot divide 12 into more than 3 partition eg: 2*2*3 . if number is strictly greater than 1.
+
+this is called prime factorization.
+
+eg: 18 --> 2^1 . 3^2 ==> 18
+
+we can find all factor in O(root(n)) but,
+now
+
+how to find prime factor of n.
+
+first we will remove all the 2's from the number n.
+by n%2==0 we will count the frequency of no. of times 2 is divided.
+dividing by 2 till max till it could be divided or it stops being divided by 2,
+will ensure in future when we check for other number that are factors of 2,
+that number could not be divided by it.
+
+then we will count all the frequency when we divide the number by 3.
+this will also be done till a that number n stops being divided by 3
+
+this will make sure that in future this number does not break with factors of 3
+
+and hence this algo will automatically make sure that all the factors are prime factors.
+
+ */
+//import java.util.Scanner;
+import java.util.HashMap;
+import java.util.Map;
+
+
+public class _03_factors_prime_factors_to_print_prime_numbers {
+    public static HashMap<Long, Long> primeFactors(long n) {
+        HashMap<Long, Long> factorCount = new HashMap<>();
+
+        // Count the number of 2s that divide n
+        while (n % 2 == 0) {
+            factorCount.put(2L, factorCount.getOrDefault(2L, 0L) + 1);
+            n /= 2;
+        }
+
+        // n must be odd at this point
+        for (long i = 3; i <= Math.sqrt(n); i += 2) {
+            // While i divides n, increment its count
+            while (n % i == 0) {
+                factorCount.put(i, factorCount.getOrDefault(i, 0L) + 1);
+                n /= i;
+            }
+        }
+
+        // If n is a prime number greater than 2
+        if (n > 2) {
+            factorCount.put(n, factorCount.getOrDefault(n, 0L) + 1);
+        }
+
+        return factorCount;
+    }
+
+    public static void main(String[] args) {
+        long n = 18; // Example number
+        HashMap<Long, Long> factors = primeFactors(n);
+
+        // Print each prime factor and its count
+        for (Map.Entry<Long, Long> entry : factors.entrySet()) {
+            System.out.println(entry.getKey() + " " + entry.getValue());
+        }
+    }
+}
+
+/*
+sieve of eratosthenes--> to generate all prime number from 1 to n.
+eg: 1 to 100
+
+1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19,
+20, 21, 22, 23, 24, 25, ..............
+
+we know 1 is not a prime,
+so; 2 is a prime number, but we know that future multiple of
+2 is not a prime number.
+
+so we run a loop from 4 to n and will cancel all multiple of 2 or simply cut factors of 2.
+it will take n/2 operations.
+
+then; 3, we know all multiple of 3 can never be a prime number.
+then we start cutting multiple of 3, in n/3 operation.
+
+now at 4; it was already been cut when were cutting factor of 2 so we ignore it.
+now at 5; so we start cutting all multiple of 5 from 1 to n.
+or simply from 5 to n or more efficiently from 5*5 to n because earlier multiple
+of 5 i.e 10, 15, 20 will be already been cut when we were cutting multiple of
+2,3.
+so it will take n/5 operations.
+
+so if we do this till root(n)
+we finally get all the prime numbers which are not cut.
+
+time comp: n/2 + n/3 + n/5 + n/7 + n/11 + n/13 + .....+ infinity
+finally it will become O(nlog(log n))
+
+
+import java.util.ArrayList;
+import java.util.List;
+
+public class Main {
+
+    // Function to find all prime numbers up to n using the Sieve of Eratosthenes
+    public static List<Integer> sieve(int n) {
+        boolean[] prime = new boolean[n + 1];
+        for (int i = 0; i <= n; i++) {
+            prime[i] = true;
+        }
+        prime[0] = false;
+        prime[1] = false;
+
+        int limit = (int) Math.sqrt(n);
+        for (int p = 2; p <= limit; p++) {
+            if (prime[p]) {
+                for (int i = p * p; i <= n; i += p) {
+                    prime[i] = false;
+                }
+            }
+        }
+
+        List<Integer> primes = new ArrayList<>();
+        for (int i = 0; i <= n; i++) {
+            if (prime[i]) {
+                primes.add(i);
+            }
+        }
+        return primes;
+    }
+
+    // Function to find primes in a range [start, end] using a segmented sieve
+    public static List<Integer> sieveRange(int start, int end) {
+        List<Integer> primes = sieve(end);
+        List<Integer> rangePrimes = new ArrayList<>();
+
+        for (int prime : primes) {
+            if (prime >= start) {
+                rangePrimes.add(prime);
+            }
+        }
+
+        return rangePrimes;
+    }
+
+    public static void main(String[] args) {
+        int l = 1; // Start of range
+        int r = 100; // End of range
+        List<Integer> primesInRange = sieveRange(l, r);
+
+        // Print all prime numbers in the range
+        for (int prime : primesInRange) {
+            System.out.println(prime);
+        }
+    }
+}
+
+
+
+
+
+
+
+ */
+
+
+

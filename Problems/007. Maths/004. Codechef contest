@@ -1,0 +1,158 @@
+package com.beginnerdsa.step3._7_Maths;
+
+/*
+we are given an array a of size n, and a positive integer n.
+we need to perform these steps:
+first create an array b such that bi=ai*m!
+then, for each element in array b, calculate f(b) where f(x) represents the no.
+of divisor of x.
+
+eg: n=3 , m=3
+a=1,2,3
+
+so final answer is: 4, 6, 6 .
+as we make array b= { 6, 12, 18}
+so prime factors of array b are: 4, 6, 6.
+
+
+so basically we need to calculate factors of
+y.m! , where y is element of array a and m is given.
+
+where a[i]=y<=10^5
+
+so, we can see: 2*3*5*7*11*13*17 is already > 10^5
+and even if each prime number is coming in prime factorization,
+so making prime factors hashmap will not take more than 7 key's in hashmap.
+
+eg: 2^16 = 65536 <= 10^5
+so we keep dividing it with prime factors until it becomes 1 and
+store each frequency in hashmap.
+
+so total frequency will be 16
+and average will be 20 for num<=10^5.
+
+so now for m!.
+m<=100
+
+so if m=100!
+
+so prime number between 2 and 100 COULD BE the
+key of hashmap of prime factorization of m.
+
+i.e there are total of 25 prime numbers b/w 2 and 100\
+and  prime factorization of m! will contain at most 25 keys
+
+
+so we have 1 hashmap of 6-7 elements i.e of y and 1 hashmap of 25 elements i.e of m!
+
+so we merge both the hashmap, and have a final hashmap
+
+
+so for code :
+let y = b[i] be our array a.
+first we take input for array a
+
+and create a hashmap where we store primefactors along with their frequency
+which will take 16-20 operations and a hashmap of size 6-7
+for that we keep on dividing a number until it becomes 1 by its
+spf. and keep on increasing the frequency if the spf in our hashmap for b[i]
+
+
+and for m!
+before coding, we will calculate the prime factor hashmap of the m!
+as it is same for all element in array a.
+
+it will be of size 25.
+for this hashmap,
+
+we will travel from 2-->100
+and we will generate small hashmap for each number because m can change for
+any input.
+
+and then we will merge all the hashmaps, by adding all hashmap to another hashmap.
+
+
+
+
+
+*/
+
+import java.util.*;
+
+public class _05_codechef_contest {
+    private static final long MAXN = 1000000;
+    private static final long MOD = 1000000007;
+    private static long[] spf = new long[(int) MAXN + 1]; // spf[i] will store the smallest prime factor of i
+
+    // Compute SPF (Smallest Prime Factor) for numbers up to MAXN
+    private static void computeSPF() {
+        for (int i = 2; i <= MAXN; i++) {
+            spf[i] = i; // Initialize spf for every number to itself
+        }
+
+        for (int i = 2; i * i <= MAXN; i++) {
+            if (spf[i] == i) { // Check if i is prime
+                for (int j = i * i; j <= MAXN; j += i) {
+                    if (spf[j] == j) { // Update spf[j] to the smallest prime factor
+                        spf[j] = i;
+                    }
+                }
+            }
+        }
+    }
+
+    // Factorize a number using the spf array
+    private static Map<Long, Long> factorize(long value) {
+        Map<Long, Long> factors = new HashMap<>();
+        while (value != 1) {
+            long divisor = spf[(int) value];
+            factors.put(divisor, factors.getOrDefault(divisor, 0L) + 1);
+            value /= divisor;
+        }
+        return factors;
+    }
+
+    public static void main(String[] args) {
+        Scanner scanner = new Scanner(System.in);
+
+        // Read input
+        int n = scanner.nextInt();
+        int m = scanner.nextInt();
+
+        computeSPF(); // Compute smallest prime factors for numbers up to MAXN
+
+        Map<Long, Long> b1 = new HashMap<>();
+        for (long i = 2; i <= m; i++) {
+            Map<Long, Long> factors = factorize(i);
+            for (Map.Entry<Long, Long> entry : factors.entrySet()) {
+                b1.put(entry.getKey(), b1.getOrDefault(entry.getKey(), 0L) + entry.getValue());
+            }
+        }
+
+        long[] b = new long[n + 1];
+        for (int i = 1; i <= n; i++) {
+            b[i] = scanner.nextLong();
+
+            Map<Long, Long> b5 = new HashMap<>(b1);
+            Map<Long, Long> factors = factorize(b[i]);
+
+            for (Map.Entry<Long, Long> entry : factors.entrySet()) {
+                b5.put(entry.getKey(), b5.getOrDefault(entry.getKey(), 0L) + entry.getValue());
+            }
+
+            long g = 1;
+            for (Map.Entry<Long, Long> entry : b5.entrySet()) {
+                g = (g * ((entry.getValue() % MOD + 1) % MOD)) % MOD;
+            }
+            System.out.print(g + " ");
+        }
+        scanner.close();
+    }
+}
+
+
+
+
+
+
+

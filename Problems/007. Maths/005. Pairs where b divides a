@@ -1,0 +1,82 @@
+package com.beginnerdsa.step3._7_Maths;
+/*
+given 2 arrays A and B --> find the number of valid pairs (A[i], B[j])
+such that B[j] is multiple of A[i].
+
+1 <= A[i],B[i] <= 10^6
+
+1<=N<=10^5
+
+brute force:
+so we can do is for each element of array a, travel each element of
+array b, and check if b%a==0 then count++
+
+public class _06_pairs_where_b_divides_a {
+    public static void main(String[] args) {
+        int[] a={1,2,3,4};
+        int[] b={4,5,7,3};
+
+        int count=0;
+        for(int i=0;i<a.length;i++){
+            for(int j=0; j<b.length;j++){
+                if(b[j]%a[i]==0){
+                    count++;
+                }
+            }
+        }
+        System.out.println(count);
+    }
+}
+
+
+
+for optimized:
+
+to stop checking again and again for the same number
+we will create a hashmap for both the arrays and store the frequency of each element
+
+and for each element of a, we will generate all the multiples of element
+and for each multiple we will check the frequency in the array b and we will multiply
+the frequency of element of a with element of b.
+
+
+
+
+
+
+
+
+*/
+
+import java.util.HashMap;
+import java.util.Map;
+
+public class _06_pairs_where_b_divides_a {
+    public static void main(String[] args) {
+        int[] a1 = {2, 2, 2, 2, 3, 3, 3, 4};
+        int[] b1 = {6, 6, 3, 3, 1};
+
+        Map<Integer, Integer> a = new HashMap<>(a1.length);
+        Map<Integer, Integer> b = new HashMap<>(b1.length);
+
+
+        for (int i : a1) {
+            a.put(i, a.getOrDefault(i, 0) + 1);
+        }
+        for (int i : b1) {
+            b.put(i, b.getOrDefault(i, 0) + 1);
+        }
+        int count = 0;
+
+        for (int key : a.keySet()) {
+            for (int j = key; j <= 1000000; j += key) {
+                if (b.containsKey(j)) {
+                    count += a.get(key) * b.get(j);
+                }
+            }
+        }
+        System.out.println(count);
+    }
+}
+
+

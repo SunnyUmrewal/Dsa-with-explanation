@@ -1,0 +1,160 @@
+package com.beginnerdsa.step3._8_Trees;
+
+/*
+tree: it is a graph with 'N' nodes and 'N-1' edges.
+      it is only a single connected component.
+
+      eg:      1
+              / \     nodes=3, edges=3
+             2---3    its not a tree
+
+      eg:    1
+            / \      nodes=5 , edges=4
+           2   3     it is a tree
+              / \
+             4   5
+
+      eg:    1
+            / \            1
+           2   3          / \
+              / \        2---3
+             4   5
+
+          it is not a tree, as tree is a single connected component.
+
+
+root of the tree: topmost node of tree which we are assuming
+
+child of a node: child of some node x: is node which is directly connected to it below.
+
+parent: parent of some node x: is node which is directly connected to it above.
+        each node has a parent except root node.
+
+
+leaf node: node which does not have any child are leaf nodes.
+
+
+subtree of node "i": it means all the nodes coming below i
+
+             1
+            / \
+           2   3
+              / \
+             4   5
+
+subtree of 3:  3
+              / \
+             4   5
+means, the node i and its directly connected children and their children till last
+
+1-2 3
+2-1
+3-1 4 5
+4-3
+5-3
+
+
+
+question: given a tree of 'N' nodes and 'N-1' edges; root at node 1
+         ;print 'N' integers; where the ith integer prints the number of children of the ith node.
+         once this is done; print all the leave of the particular tree.
+
+
+
+
+
+*/
+
+import java.util.*;
+
+public class _01_intro {
+    public static void main(String[] args) {
+        Scanner sc = new Scanner(System.in);
+
+        int nodes = sc.nextInt();
+        int edges = sc.nextInt();
+
+        ArrayList<Integer>[] arr = new ArrayList[nodes + 1];
+
+        for (int i = 1; i <= nodes; i++) {
+            arr[i] = new ArrayList<>();
+        }
+
+        for (int i = 1; i <= edges; i++) {
+            //read the input for node
+            int x = sc.nextInt();
+            int y = sc.nextInt();
+
+            arr[x].add(y);
+            arr[y].add(x);
+
+
+        }
+        traversal(arr,1,nodes);
+
+    }
+
+    static void traversal(ArrayList<Integer>[] arr, int src, int nodes){
+        boolean[] visited=new boolean[nodes+1];
+        Queue<Integer> q=new LinkedList<>();
+
+        int[] array=new int[nodes+1];
+
+        q.add(src);
+        visited[src]=true;
+
+
+        while(!q.isEmpty()){
+            int node=q.poll();
+            System.out.println(node);
+
+            for(int i:arr[node]){
+                if(!visited[i]){
+                    q.add(i);
+                    visited[i]=true;
+                    array[node]++;  //this will count the no. of children for ith node.
+
+                }
+            }
+        }
+
+        System.out.println("total children:");
+        for(int i=1;i<=nodes;i++){
+            System.out.println(array[i]); //to print the total children of each node
+
+
+        }
+
+        for(int i=1;i<=nodes;i++){
+            if(array[i]==0){
+                System.out.println(i); //if node has 0 child then it's a leaf node
+            }
+
+
+        }
+
+    }
+}
+
+
+
+/*
+to print the leaf nodes in a tree,
+we can traverse the arr arraylist and if its size is 1
+then its a leaf node
+except the root node
+
+arr[i].size() = degree of node i
+if
+arr[i].size() ==1 , its a leaf node.
+
+f(i != 1 && arr[i].size() == 1) //except the root node.
+
+ */
+
+
+
+
+
+
+

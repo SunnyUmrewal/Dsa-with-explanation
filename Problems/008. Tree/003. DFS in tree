@@ -1,0 +1,274 @@
+package com.beginnerdsa.step3._8_Trees;
+
+/*
+prerequisite is DFS on graph.
+
+dfs on a tree is same as dfs on graph.
+for each node we go to each boundary from root node,
+and exhaust the searching till the leaf node.
+
+eg: we take the source node, print it
+then expand its child, and keep expanding its child
+till leaf node,
+we need recursion in this also.
+
+
+
+
+
+*/
+
+
+//dfs: bottom up
+/*
+import java.util.Scanner;
+import java.util.ArrayList;
+
+
+public class _03_DFS_in_tree {
+    public static void main(String[] args) {
+        Scanner sc=new Scanner(System.in);
+        int nodes=sc.nextInt();
+        int edges=sc.nextInt();
+
+        ArrayList<Integer>[] arr=new ArrayList[nodes+1];
+
+        for(int i=1;i<=nodes;i++){
+            arr[i]=new ArrayList<>();
+        }
+
+        for(int i=1;i<=edges;i++){
+            int x=sc.nextInt();
+            int y=sc.nextInt();
+
+            arr[x].add(y);
+            arr[y].add(x);
+
+        }
+        int[] visited=new int[nodes+1];
+        int[] parent=new int[nodes+1];
+
+        dfs(1,arr,parent,visited);
+
+
+
+    }
+    static void dfs(int src, ArrayList<Integer>[] arr, int[] parent, int[]visited){
+
+        visited[src]=1;
+
+        for(int i:arr[src]){
+            if(visited[i]==0){
+                visited[i]=1;
+                parent[i]=src;
+                dfs(i,arr,parent,visited);
+            }
+        }
+        System.out.println(src);
+
+    }
+}
+*/
+
+//printing the src after the for loop will make it bottom up traversal.
+/*
+we the recursion for all child ends src will point to the leaf node
+and as soon as the for loop ends we print the src,
+and then it keeps printing the new src's
+which is basically bottom up approach.
+
+everything is same just printing src after the for loop makes it bottom up approach.
+
+
+now,
+
+how to solve the dp on tree problem:
+no matter what the question is; you should always calculate the
+answer of bottom nodes; then only you should go up.
+
+trick: always calculate the answer for bottom nodes; then start going up;
+this really helps; because the answer of bottom nodes is used to
+calculate the answer of nodes which are coming up(above!)
+
+NOTE: Answer to a node can only be calculated when the answer has been
+calculated for the children.
+
+
+question:
+Given a Tree of “N” nodes; find the height of each node and print it ;
+the tree is rooted at Node-1
+
+height of node x means the longest path you can go from a
+current node x to downwards,
+means; longest distance from current node to some leaf node.
+
+eg;
+
+             1
+             |
+             2
+           /   \
+          3     4
+                |
+                5
+
+h(1)=4
+h(2)=3
+h(3)=1
+h(4)=2
+h(5)=1
+
+so, when suppose we are at 2, so
+height of 2 is from node 2 to longest leaf node from 2. i.e till 5 i.e h=3
+so
+height[i]=1+ max(height(child 1 of i), height(child 2 of i),...)
+
+we add 1 in front because height from longest child to node i will also be counted.
+like; for h(2) we know h(4)=2 so we add 1 to reach height of 2.
+so h(2) becomes 3.
+
+so this tells us to find height of a node,
+ we need to calculate the height of its childs and
+ we need to do max height of child +1
+
+
+ but for the leaf node what we have to do;
+
+now one more eg:
+             1
+             |
+             2
+           /   \
+          3     4
+                |
+                5
+
+to find the h(5)
+we have to think that if a node does not have child
+then we should ignore that and just count 1 in height
+i.e its own height.
+
+becuase when traversing and finding the directly connected nodes
+to a node we will get some childs and the parent.
+if a node does not have child and has a parent
+then its parent height could be added by mistake
+then we will write a condition that if
+parent[node]==child
+then just ignore it.
+else,
+we found a child and then we take the max height of the child +1
+
+
+
+
+
+
+
+
+this is a dp problem, as we require the child info to get the parent info.
+so its a postorder dfs (bottom up)
+
+
+
+*/
+
+import java.util.Scanner;
+import java.util.ArrayList;
+
+
+public class _03_DFS_in_tree {
+    public static void main(String[] args) {
+        Scanner sc = new Scanner(System.in);
+        int nodes = sc.nextInt();
+        int edges = sc.nextInt();
+
+        ArrayList<Integer>[] arr = new ArrayList[nodes + 1];
+
+        for (int i = 1; i <= nodes; i++) {
+            arr[i] = new ArrayList<>();
+        }
+
+        for (int i = 1; i <= edges; i++) {
+            int x = sc.nextInt();
+            int y = sc.nextInt();
+
+            arr[x].add(y);
+            arr[y].add(x);
+
+        }
+        int[] visited = new int[nodes + 1];
+        int[] parent = new int[nodes + 1];
+        int[] height = new int[nodes + 1];
+
+
+        dfs(1, arr, parent, visited, height);
+
+
+        for (int i = 1; i <= nodes; i++) {
+            System.out.println(height[i]);
+        }
+
+    }
+
+    static void dfs(int node, ArrayList<Integer>[] arr, int[] parent, int[] visited, int[] height) {
+
+        visited[node] = 1;
+
+        for (int i : arr[node]) {
+            if (visited[i] == 0) {
+                visited[i] = 1;
+                parent[i] = node;
+                dfs(i, arr, parent, visited,height);
+            }
+        }
+        System.out.println(node);
+        /*
+          Till here we have done the bottom up traversal
+          now we are at leaf node,
+          here we will start calculating the height of each node.
+          and will move above so that for each node, we already have
+          height of its child.
+
+
+           we have parent array ready where,
+           parent[i] tells the parent of node i.
+           which we will use here,
+
+           as when traversing the directly connected nodes of a node,
+           child and parent will be directly connected to a node,
+           and if some node does not have child
+           so that node height will be miscalculated
+           by adding its parent height.
+           so we will handle that condition from parent array
+           as if child ==parent[node]
+           then ignore that.
+
+            before that we will make a height array to store height of each node.
+
+            now we will traverse each child of node. i.e src
+        */
+
+
+        int h = 0;
+        for (int child : arr[node]) {
+            if (child == parent[node]) {
+                /*
+                it means the child node is parent of the node
+                and its not a child
+                we ignore it
+
+                 */
+                continue;
+            } else {
+                h = Math.max(h, height[child]);
+            }
+        }
+
+
+        height[node] = 1 + h;
+
+
+    }
+
+
+}

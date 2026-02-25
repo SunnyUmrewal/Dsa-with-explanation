@@ -7,4 +7,3 @@ Things to remember while doing DSA:
 2. Prepare topic-wise doc. that will contain questions link and a 2 liner approach of how to solve that question. Use "Ideone.com" to save your personal code, which will help you revise.
 3. Revise your code on weekly or within 3 days that is the best method to get concept.
 4. Try to code daily, even if you have to do it for 30 min. or just solve a easy question but do it daily.
- 

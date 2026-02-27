@@ -1,0 +1,178 @@
+package com.beginnerdsa.step3._8_Trees;
+
+/*
+a single connected component with acyclic graph is nothing but a tree
+also a tree has n nodes , n-1 edges , no cycles, and has 1 connected component
+
+
+question:
+given an undirected acyclic graph with all the vertices having at most 3 neighbours.
+please find a vertex in the tree so that after setting the vertex as root, it forms
+a valid binary tree.
+
+
+before directly coming to code;
+
+here we are given undirected acyclic graph that means:- that means its a tree, but
+
+we will ask some questions to interviewer,
+
+like:
+1. constraints: how many nodes can be in graph?  --> 10^5
+2. Is this a single connected component graph given in input. --> yes
+3. Are there multiple edges in the graph? --> No
+
+now,
+this will confirm that this is a tree.
+so,
+
+observation: given graph is a tree --> such that each node has max. 3 edges.
+
+so we need to re-root a node such that it becomes a valid binary tree-means it can have at most 2 children.
+
+eg:
+         1
+       /   \
+      2     3
+          /   \
+         4     8
+ --> make 3 as root node:
+                                   3
+                                /  |  \
+                               4   1   8
+                                   |
+                                   2
+
+
+
+
+make re-root to 8:
+
+            8
+            |
+            3
+          /   \
+         4     1
+               |
+               2
+
+so now we got it how to re-root;
+
+now,
+observation;
+in question, we are given that each node can have 3 neighbours,
+so each node can have max. 3 edges.
+
+
+eg:
+          1
+       /  |  \
+      2   3   4
+    /  \
+   5    6
+
+Now which node to make root, so it becomes valid binary tree.
+
+answer is; we can make any node as the root node which does not have more than 2 edges.
+
+as in the given tree, each node will surely have at max 2 children except the root node,
+because then only all the node will have at most 3 edges.
+
+eg;
+          1
+       /  |  \
+      2   3   4
+    / | \
+   5  7  6
+
+here node 2 has 3 children, hence 4 edges so it's not a valid input tree.
+and root can have at most 3 children as then it will have at max 3 edges as it does not have any parent.
+so we need to fix the root node only.
+
+
+so, lets do visualization,
+
+is the given input tree;
+it is always a binary tree, except the root node;
+as binary tree can have at max 3 edges; so that every node will have 2 child so
+total 3 edges which is already forming a binary tree, except the root node,
+root node can have 3 child as it does not have any parent.
+so if we fix the root node problem our work is done.
+
+
+
+proof; the only problem is the root of input tree might have 3 child or else the problem is already solved.
+the root for input tree is the answer if it is already attached to two nodes only, (which was our main problem)
+but,
+in case the root has 3 child, then selecting leaf of the tree always works,
+
+because;
+eg;      1
+      /  |  \
+     2   3   4
+
+if the root has 3 children and i take any leaf node and make it root node,
+then the old root becomes the child of new root and new root becomes the parent of old root.
+it solves the problem.
+
+
+so in the code, we just need to print any leaf node, and that is our answer,
+so we need to find the leaf node,
+its simple.
+
+and to find leaf node, the adjacency list whose size is one is the node which is a leaf node.
+so we just need to check the adjacency list nodes.
+
+*/
+
+
+import java.util.*;
+
+public class _04_Google_swe {
+    public static void main(String[] args) {
+        Scanner sc = new Scanner(System.in);
+
+        int nodes = sc.nextInt();
+        int edges = sc.nextInt();
+
+        ArrayList<Integer> result = new ArrayList<>();
+
+        ArrayList<Integer>[] arr = new ArrayList[nodes + 1];
+
+        for (int i = 1; i <= nodes; i++) {
+            arr[i] = new ArrayList<>();
+        }
+        for (int i = 1; i <= edges; i++) {
+            int x = sc.nextInt();
+            int y = sc.nextInt();
+
+            arr[x].add(y);
+            arr[y].add(x);
+        }
+
+        for (int i = 1; i <= nodes; i++) {
+            if (arr[i].size() <= 2) {
+                System.out.println(i);
+                return;
+            }
+
+        }
+    }
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

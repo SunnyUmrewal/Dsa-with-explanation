@@ -1,0 +1,73 @@
+package com.beginnerdsa.step3._8_Trees;
+
+/*
+
+
+
+ */
+
+import java.util.*;
+
+public class _07_VMware_question {
+    public static void main(String[] args) {
+        Scanner sc = new Scanner(System.in);
+
+        int nodes = sc.nextInt();
+        int edges = sc.nextInt();
+
+        ArrayList<Integer>[] arr = new ArrayList[nodes + 1];
+
+        for (int i = 1; i <= nodes; i++) {
+            arr[i] = new ArrayList<>();
+        }
+        for (int i = 1; i <= edges; i++) {
+            int x = sc.nextInt();
+            int y = sc.nextInt();
+
+            arr[x].add(y);
+            arr[y].add(x);
+
+        }
+
+        int[] value = new int[nodes + 1];
+        for (int i = 1; i <= nodes; i++) {
+            value[i] = sc.nextInt();
+        }
+
+        int[] visited = new int[nodes + 1];
+        int[] parent = new int[nodes + 1];
+        int[] answer = new int[nodes + 1];
+
+        dfs(1, arr, visited, parent, value, answer);
+
+        for (int i = 1; i <= nodes; i++) {
+            System.out.println(answer[i]);
+        }
+
+    }
+
+    static void dfs(int src, ArrayList<Integer>[] arr, int[] visited, int[] parent, int[] value, int[] answer) {
+
+        visited[src] = 1;
+        for (int i : arr[src]) {
+            if (visited[i]==0){
+                parent[i] = src;
+                dfs(i, arr, visited, parent, value, answer);
+            }
+        }
+
+        System.out.println(src);
+
+        int sum = 0;
+        for (int child : arr[src]) {
+            if (child == parent[src]) {
+                continue;
+            } else {
+                sum = Math.max(sum, answer[child]);
+
+            }
+            answer[src] = value[src] + Math.max(0,sum);
+        }
+    }
+}
+

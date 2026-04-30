@@ -1,0 +1,166 @@
+package com.beginnerdsa.step4._1_Hashing;
+
+/*
+given an array of integer--> you have to find the maximum sum pair which has same sum when their digits are added.
+
+eg: [51,71,17,42]
+
+pair 1: 51 , 42 --> as (5+1) = 6 = (4+2)   so their sum= 93
+pair 2: 71 , 17 --> as (7+1) = 8 = (1+7)   so their sum= 88
+
+max(93,88) => 93
+return 93
+if no pair found --> return -1;
+
+
+brute force:
+
+for every i--> calculate its digit sum
+and for j=i+1 --> if their digit sum == ith digit sum so add the numbers and compare with result.
+finally print the result.
+
+
+ */
+
+/*
+public class _01_hashing {
+    public static void main(String[] args) {
+        int result=-1;
+
+        int[] arr={51,71,17,42};
+
+        for(int i=0;i<arr.length;i++){
+            int first=0;
+            int num=arr[i];
+            while(num!=0){
+                int a=num%10;
+                first+=a;
+                num/=10;
+            }
+
+            for(int j=i+1;j<arr.length;j++){
+                int second=0;
+                num= arr[j];
+                while(num!=0){
+                    int b=num%10;
+                    second+=b;
+                    num/=10;
+                }
+                if(first==second && arr[i]+arr[j]>result){
+                    result=arr[i]+arr[j];
+                }
+            }
+        }
+
+        System.out.println(result);
+
+    }
+}
+*/
+
+
+/*
+recalculating the sum of digit for every i as soon as our i changes.
+so we can store them in hashmap with key and value being the digitsum and element respectively.
+           i
+eg: [12,33,6,51,85,24]
+
+so--> when we are on suppose i --> we will find samedigit sum same as arr[i] from 1 to i-1 and
+we will see that if the pair with current i and found element is greater than result if yes then update result with new sum
+and similarly we will also update the hashmap of current digit sum which was caused by current element or the previously stored element
+so that in future we only compare with the bigger element if same digit sum arrives.
+
+comparing the total sum if new same digit sum and previously stored digit sum is imp.
+as eg: 33,51,24
+
+if we only update with largest value then finally 51 will be in hashmap and when 24 comes result will be 24+51 but
+actual max sum is 33+51.
+
+
+eg: [12,33,6,51,85,24]
+
+index 1: hashmap will look like:
+3-->12
+
+i=2 :
+3-->12
+6-->33
+
+i=3: (now we found a digit sum which is already present in hashmap), now will compare the max value from both i.e the
+        current element and the value in hashmap for same digit sum and before updating with the max value
+        we will compare if 6+33 is > result also. and
+
+3-->12
+6-->33
+
+i=4: (we compared 33 with 51 but not with 6 as we already compared 6 with 33 previously so automatically 51 will be > 6
+     and before updating 33 with 51 we will check if 51+33> result as both have same digit sum. )
+
+3-->12
+6-->51
+
+i=5:
+3-->12
+6-->51
+13-->85
+
+i=6:
+3-->12
+6-->51
+13-->85
+
+sout(result)
+ */
+
+import java.util.*;
+
+public class _01_hashing {
+
+    static int digitSum(int a){
+        int sum=0;
+        while(a!=0) {
+            sum += a % 10;
+            a /= 10;
+        }
+        return sum;
+    }
+
+    public static void main(String[] args) {
+        Scanner sc = new Scanner(System.in);
+
+        Map<Integer, Integer> map = new HashMap<>();
+        int n = sc.nextInt();
+        int[] arr=new int[n];
+        for(int i=0;i<n;i++){
+            arr[i]=sc.nextInt();
+        }
+
+        int result=-1;
+        int count=0;
+
+        for(int i=0;i<n;i++){
+            int digitSum=digitSum(arr[i]);
+            if(!map.containsKey(digitSum)){
+                map.put(digitSum,arr[i]);
+            }
+            else{
+                int max=Math.max(result,arr[i]+map.get(digitSum));
+                if(max==result){
+                    count++;
+                }
+                else{
+                    count=0;
+                }
+                result=max;
+
+                map.put(digitSum,Math.max(arr[i],map.get(digitSum)));
+            }
+
+        }
+        System.out.println(result);
+
+    }
+}
+
+
+

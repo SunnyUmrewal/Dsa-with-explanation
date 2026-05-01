@@ -1,0 +1,69 @@
+package com.beginnerdsa.step4._1_Hashing;
+
+/*
+Hashing 22 , amazon OA
+
+You are given two strings word and target. Each character in word can be used at most once.
+
+Return the maximum number of times you can form the string target using the characters from word.
+
+Example:
+
+Input:  word = "aaabbbccc", target = "abc"
+Output: 3
+_ a a _ b b _ c c
+_ _ a _ _ b _ _ c
+_ _ _ _ _ _ _ _ _
+
+
+
+
+approach:
+
+Put the frequency of each element from word array in map.
+now count the total freq. of each element from target
+and check if all target element present in map
+if yes then we divide the map[i]/target[i]
+
+
+
+
+ */
+import java.util.*;
+
+
+public class _02_Max_count_of_target_from_string {
+    public static void main(String[] args) {
+        Scanner sc=new Scanner(System.in);
+        String s=sc.next();
+        String target=sc.next();
+        int result=Integer.MAX_VALUE;
+
+        Map<Character,Integer> map1=new HashMap<>();
+        Map<Character,Integer> map2=new HashMap<>();
+
+        char[] word=s.toCharArray();
+        char[] tar=target.toCharArray();
+
+        for(char i:word){
+            map1.put(i, map1.getOrDefault(i,0)+1);
+        }
+
+        for(char i:tar){
+            map2.put(i, map2.getOrDefault(i,0)+1);
+        }
+
+
+        for(Map.Entry<Character,Integer> entry:map2.entrySet()){
+            char a=entry.getKey();
+            if(!map1.containsKey(a)){
+                result=0;
+                return;
+            }
+            else{
+                result=Math.min(result,map1.get(a)/map2.get(a));
+            }
+        }
+        System.out.println(result);
+    }
+}

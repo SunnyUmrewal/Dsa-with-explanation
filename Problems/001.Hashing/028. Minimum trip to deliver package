@@ -1,0 +1,155 @@
+package com.beginnerdsa.step4._1_Hashing;
+/*
+hashing 23, amazon oa
+
+
+given some packages weight, we need to deliver them with as minimum trip as we can
+with 1 trip, we can only pick 2 packages of same weight or 3 packages with same weight.
+
+return min trip req. to deliver them, if not possible to deliver all of them then return -1.
+
+
+brute force:
+
+for each packageWeight item i, we will find same weighted item in the array
+if the frequency of that item is ==2 or ==3 then we remove them from the array and increase the count
+of trip to 1;
+and if I found an item with only 1 freq then i will return -1.
+
+
+*/
+
+
+import java.util.Scanner;
+import java.util.*;
+
+/*
+
+public class _03_Min_trip_to_deliver_packages {
+    public static void main(String[] args) {
+        Scanner sc = new Scanner(System.in);
+        int n = sc.nextInt();
+
+        ArrayList<Integer> packageWeight = new ArrayList<>();
+
+        for (int i = 0; i < n; i++) {
+            packageWeight.add(sc.nextInt());
+        }
+
+        int count = 0;
+
+        for (int i = 0; i < packageWeight.size(); ) {
+
+            int curr = packageWeight.get(i);
+
+            // count frequency
+            int freq = 0;
+            for (int j = 0; j < packageWeight.size(); j++) {
+                if (packageWeight.get(j).equals(curr)) {
+                    freq++;
+                }
+            }
+
+            // if only 1 → impossible
+            if (freq == 1) {
+                System.out.println("-1");
+                return;
+            }
+
+            // remove in groups
+            while (freq > 0) {
+
+                if (freq >= 3) {
+                    int removed = 0;
+
+                    for (int j = 0; j < packageWeight.size() && removed < 3; ) {
+                        if (packageWeight.get(j).equals(curr)) {
+                            packageWeight.remove(j);
+                            removed++;
+                        } else {
+                            j++;
+                        }
+                    }
+
+                    freq = freq - 3;
+                    count++;
+                } else if (freq >= 2) {
+                    int removed = 0;
+
+                    for (int j = 0; j < packageWeight.size() && removed < 2; ) {
+                        if (packageWeight.get(j).equals(curr)) {
+                            packageWeight.remove(j);
+                            removed++;
+                        } else {
+                            j++;
+                        }
+                    }
+
+                    freq = freq - 2;
+                    count++;
+                } else {
+                    System.out.println("-1");
+                    return;
+                }
+            }
+        }
+
+        System.out.println(count);
+    }
+}
+
+*/
+
+//learn how to remove elements and manage frequencies.
+
+
+//optimized:
+
+/*
+
+
+if a number is coming x number of times--> then we do x/3 is thats fully divisible then we add it to count
+and if thats not fully divisible then we add 1 to x/3 and then we add it to count
+
+eg: 15 --> 15/3=5 it takes 5 operations to finish
+
+16 --> 16/3= 5 +1 --> 3,3,3,3,2,2
+the last 3 will be converted to 2 and then leftover 1 is added to last leftover 1
+so basically 1 extra operation will be there
+
+
+
+ */
+
+
+public class _03_Min_trip_to_deliver_packages {
+    public static void main(String[] args) {
+        Scanner sc = new Scanner(System.in);
+        int n = sc.nextInt();
+
+        Map<Integer,Integer> map=new HashMap<>();
+
+
+        for (int i = 0; i < n; i++) {
+            int a=sc.nextInt();
+            map.put(a,map.getOrDefault(a,0)+1);
+        }
+
+        int count=0;
+
+        for(Map.Entry<Integer,Integer> entry:map.entrySet()){
+
+            if(entry.getValue()==1){
+                System.out.println("-1");
+                return;
+            }
+
+            else{
+                count+=entry.getValue()/3 + (entry.getValue()%3!=0 ? 1:0);
+            }
+        }
+        System.out.println(count);
+
+
+    }
+}

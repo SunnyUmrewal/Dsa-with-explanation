@@ -1,0 +1,130 @@
+package com.beginnerdsa.step4._1_Hashing;
+
+/*
+given an array with all 0s in it
+given 1 queries of range of format [l,r] both inclusive
+add 1 for each index from l-->r for all queries
+and return the final array.
+
+
+
+brute force: for each query run the loop and add 1 for each index and
+finally return the array.
+
+
+*/
+
+
+import java.util.Scanner;
+
+/*
+public class _04_visaOA_print_arr_after_operations {
+    public static void main(String[] args) {
+        Scanner sc=new Scanner(System.in);
+        int n=sc.nextInt();
+        int[] arr=new int[n];
+
+        int q=sc.nextInt();
+
+        int i=0;
+        while(i<q){
+            int l=sc.nextInt()-1;
+            int r=sc.nextInt()-1;
+
+            while(l<=r){
+                arr[l]+=1;
+                l++;
+            }
+
+            i++;
+        }
+        for(int j:arr){
+            System.out.print(j+" ");
+        }
+    }
+}
+*/
+
+//time comp: O(N*Q)
+
+/*
+optimized version of this problem :
+
+we need to remember a trick for this
+
+as we know we need to add 1 from l till r
+so what we will do is: add 1 at index l and -1 at index r+1
+
+and will do prefix sum of the array
+eg: l=3 r=4
+
+   0,0,0,0,0
+   0 0 1 0 -1
+prefix sum: 0 0 1 1 0
+this is our answer.
+
+we can do this for multiple queries at once.
+
+eg : l=3 r=7
+     l=5 r=8
+index:                  1 2 3 4 5 6 7  8   9
+initially:              0,0,0,0,0,0,0, 0,  0
+inserting 1 and -1:     0 0 1 0 0 1 0 -1  -1
+prefix sum:             0 0 1 1 1 2 2  1   0
+
+This is our final answer.
+
+
+if r==arr.length then we should increase array length by 1 as we need to put -1 in index r+1
+
+
+
+so we can put 1 and -1 for each query in O(1) time
+and then calculate prefix sum of the full array to get our answer.
+
+this is not a trick but a concept called "difference array technique"
+
+
+
+IMPORTANT CONCEPT:
+
+when we see same task again and again for a range then we can apply this concept.
+
+
+
+
+ */
+
+
+public class _04_visaOA_print_arr_after_operations {
+    public static void main(String[] args) {
+        Scanner sc=new Scanner(System.in);
+        int n=sc.nextInt();
+        int[] arr=new int[n+2];
+
+        int q=sc.nextInt();
+
+        int[] prefixSum=new int[n+2];
+        prefixSum[0]=0;
+        int i=1;
+        while(i<=q){
+            int l=sc.nextInt();
+            int r=sc.nextInt();
+
+            arr[l]+=1;
+            arr[r+1]-=1;
+            i++;
+
+        }
+        for(int k=1;k<prefixSum.length-1;k++){
+            prefixSum[k]=prefixSum[k-1]+arr[k];
+        }
+        for(int j=1;j<prefixSum.length-1;j++){
+            System.out.print(prefixSum[j]+" ");
+        }
+    }
+}
+
+
+
+//time comp: O(N)+O(Q)

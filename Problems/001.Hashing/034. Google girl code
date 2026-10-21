@@ -1,0 +1,88 @@
+package com.beginnerdsa.step4.ProDsa._1_Hashing;
+
+
+/*
+we are given with an array and an integer k,
+for each element of array we can convert that into a[i]=a[i]+x only 1 time,
+where x is element of range [-k,+k], both inclusive
+
+we need to print the maximum element count in a subsequence that can be converted to
+a same number.
+
+eg: arr[5,8,10] k=2
+
+so we can make it [5,8,8] or [5,10,10] or...
+many things but at max we can convert 2 element to a same number
+
+so answer is 2.
+
+eg: arr=[5,8,10] k=3
+
+we can make it [7,7,7] or [8,8,8] or [5,10,10] ...
+
+But maximum same number sequence we can make is of 3 length.
+so answer is 3.
+
+
+
+so what we can do is:
+to do this question first revise the previous question : _04_visaOA_arr_after_operation or the "different array technique"
+
+for each element in the array, we will save the frequency of each element that can be made from the ranges of k
+and finally we will print the max number from the frequency.
+
+
+
+
+
+
+*/
+
+
+import java.util.ArrayList;
+import java.util.Scanner;
+import java.util.HashMap;
+import java.util.Map;
+
+import java.util.*;
+
+public class _05_google_girl_code_max_same_sequence {
+    public static void main(String[] args) {
+
+        Scanner sc = new Scanner(System.in);
+
+        int n = sc.nextInt();
+        int[] arr = new int[n];
+
+        int[] a = new int[200];
+
+        for (int i = 0; i < n; i++) {
+            arr[i] = sc.nextInt();
+        }
+
+        int k = sc.nextInt();
+
+        for (int i = 0; i < n; i++) {
+
+            int l = arr[i] - k;
+            int r = arr[i] + k;
+
+            a[l] += 1;
+            a[r + 1] -= 1;
+        }
+
+        int max = -1;
+        int sum = 0;
+
+        for (int i = 0; i < a.length; i++) {
+
+            sum += a[i];
+
+            if (sum > max) {
+                max = sum;
+            }
+        }
+
+        System.out.println(max);
+    }
+}

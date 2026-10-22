@@ -1,0 +1,69 @@
+package com.beginnerdsa.step4.ProDsa._1_Hashing;
+
+/*
+
+several lamps are placed on a number line, each of which illuminates
+some light on the line.
+lamps are represented in 2d array of lamps where,
+ith lamp covers range of lamp[i][0] to lamp[i][1]
+
+given some control points;
+we have to tell how many lamps concentrate their lights
+on that point on number line,
+return the number for each control point.
+
+
+eg: lamps=[[1,7],[5,11],[7,9]]
+    points= [7,1,5,10,9,15]
+
+    answer: [3,1,2,1,2,0]
+
+so basically we are doing same thing again and again for a range of numbers
+that means this could be difference array technique.
+
+so for each range of lamps like 1-->7
+
+we will mark +1 at index 1 and -1 at index 7+1= 8 (for lamp[1,7])
+and do this for all lamps range.
+and finally find the prefix sum of the array.
+and print the answer array for the points we need.
+
+
+
+
+
+*/
+
+import java.util.Scanner;
+import java.util.HashMap;
+import java.util.Map;
+
+
+public class _06_VisaOA_max_lamp_concentration {
+    public static void main(String[] args) {
+        Scanner sc = new Scanner(System.in);
+        int n = sc.nextInt();
+        int[] arr = new int[n + 2];
+
+        int q = sc.nextInt();
+
+        int[] prefixSum = new int[n + 2];
+        prefixSum[0] = 0;
+        int i = 1;
+        while (i <= q) {
+            int l = sc.nextInt();
+            int r = sc.nextInt();
+
+            arr[l] += 1;
+            arr[r + 1] -= 1;
+            i++;
+
+        }
+        for (int k = 1; k < prefixSum.length - 1; k++) {
+            prefixSum[k] = prefixSum[k - 1] + arr[k];
+        }
+        for (int j = 1; j < prefixSum.length - 1; j++) {
+            System.out.print(prefixSum[j] + " ");
+        }
+    }
+}

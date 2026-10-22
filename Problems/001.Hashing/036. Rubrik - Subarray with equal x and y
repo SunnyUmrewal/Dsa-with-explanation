@@ -1,0 +1,240 @@
+package com.beginnerdsa.step4.ProDsa._1_Hashing;
+/*
+given an array of size N, it consists of only x and y
+we need to find the count of subarrays with equal no. of x and y
+
+
+brute force:
+
+we will generate every subarray and will check how many x and y are there
+and if they are equal then we will increase the count
+
+time Complexity= O(N^2)
+
+
+
+optimized:
+
+as we have only 2 characters, and we are repeatedly adding x and y to the counts
+so we can do is for every x we can write +1 and for every y we can write -1,
+and finally check in the prefix array which index is giving 0 sum and that is
+where we have equal number of x and y in subarray.
+
+
+*/
+/*
+
+public class _07_rubrik_subarray_with_equal_x_and_y {
+    public static void main(String[] args) {
+
+        char[] arr={'x','x','y','y','x','x'};
+
+        int count=0;
+
+        for(int i=0;i<arr.length;i++){
+
+            int cx=0;
+            int cy=0;
+
+
+            for(int j=i;j<arr.length;j++){
+                if(arr[j]=='x'){
+                    cx++;
+                }
+                if(arr[j]=='y'){
+                    cy++;
+                }
+
+                if(cx==cy){
+                    count++;
+                }
+
+            }
+        }
+        System.out.println(count);
+
+
+    }
+}
+*/
+
+
+import java.util.Map;
+import java.util.HashMap;
+/*
+public class _07_rubrik_subarray_with_equal_x_and_y {
+    public static void main(String[] args) {
+
+        char[] arr={'x','x','y','y','x','x'};
+        Map<Integer,Integer> map=new HashMap<>();
+
+        int count=0;
+        map.put(0,1);
+        int[] prefixSum=new int[arr.length+1];
+        int[] check=new int[arr.length];
+
+        prefixSum[0]=0;
+
+        for(int i=0;i<arr.length;i++){
+            if(arr[i]=='x'){
+                check[i]=-1;
+            }
+            if(arr[i]=='y'){
+                check[i]=1;
+            }
+        }
+
+        for(int i=1;i<=arr.length;i++){
+            prefixSum[i]=prefixSum[i-1]+check[i-1];
+
+        }
+
+
+        for(int i=0;i<prefixSum.length;i++){
+            int a=prefixSum[i];
+            if(map.containsKey(a)){
+                count+=map.get(a);
+            }
+            map.put(prefixSum[i],map.getOrDefault(prefixSum[i],0)+1);
+
+        }
+
+        System.out.println(count);
+
+
+
+
+
+    }
+}
+*/
+
+
+/*
+we can also do like:
+
+for each index j, we calculate ( count of 2 till j ) - ( count of 2 till i-1 )  if that's == (count of 1 till j)- (count of 1 till i-1)
+then it's a valid subarray
+
+C2[j] - C2[i-1] = C1[j] - C1[i-1]
+rearrange:
+
+C2[J]- C1[J] = C2[i-1] - C1[i-1]
+
+so at every index we need to calculate C2[J]- C1[J] and find how many times that is occurring from 0 till J
+that are our valid subarray.
+
+
+
+*/
+
+
+
+/*
+public class _07_rubrik_subarray_with_equal_x_and_y {
+    public static void main(String[] args) {
+
+        char[] arr={'x','x','y','y','x','x'};
+        Map<Integer,Integer> map=new HashMap<>();
+
+        int count=0;
+
+        int[] check=new int[arr.length];
+
+        map.put(0,1);
+
+        int c2=0;
+        int c1=0;
+
+        for(int i=0;i<arr.length;i++) {
+            if (arr[i] == 'x') {
+                check[i] = -1;
+                c1++;
+
+            }
+            if (arr[i] == 'y') {
+                check[i] = 1;
+                c2++;
+            }
+            if(map.containsKey(c2-c1)){
+                count+=map.get(c2-c1);
+            }
+            map.put(c2-c1,map.getOrDefault(c2-c1,0)+1);
+        }
+        System.out.println(count);
+
+    }
+}
+
+*/
+
+/*
+Now lets solve this for 3 variables;
+count of x=y=z
+
+earlier we were finding for 2 variables where
+count (x) at j - count (x) at i = count (y) at j - count (y) at i
+then we said i --> j is a valid subarray because count of x and y is same from range i --> j
+
+now for 3 variables;
+
+we had already checked for x and y, we will also check for y and z
+
+count(y) at j - count (y) at i = count (z) at j - count (z) at i
+
+then it tells that count of x=y=z from range i --> j
+
+so that becomes a valid subarray.
+
+
+
+
+
+ */
+
+
+public class _07_rubrik_subarray_with_equal_x_and_y {
+    public static void main(String[] args) {
+
+        char[] arr={'x','x','y','y','x','x'};
+        Map<Integer,Integer> map=new HashMap<>();
+
+        int count=0;
+
+        int[] check=new int[arr.length];
+
+        map.put(0,1);
+
+        int c2=0;
+        int c1=0;
+        int c3=0;
+
+        for(int i=0;i<arr.length;i++) {
+            if (arr[i] == 'x') {
+                check[i] = -1;
+                c1++;
+
+            }
+            if (arr[i] == 'y') {
+                check[i] = 1;
+                c2++;
+            }
+            if (arr[i]=='z'){
+                check[i]=2;
+                c3++;
+            }
+
+            if(map.containsKey(c2-c1) & map.containsValue(c3-c2) ){
+                count+=map.get(c2-c1);
+            }
+            map.put(c2-c1,c3-c2);
+
+
+        }
+        System.out.println(count);
+
+    }
+}
+
+
+
